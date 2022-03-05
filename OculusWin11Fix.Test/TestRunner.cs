@@ -73,10 +73,10 @@ namespace Nanikit.Test {
       }
     }
 
-    private static List<MethodInfo> GetTests(Assembly targetAssembly) {
+    private List<MethodInfo> GetTests(Assembly targetAssembly) {
       Type? testAttribute = typeof(Test);
       var testMethods = new List<MethodInfo>();
-      foreach (Type? type in targetAssembly.GetTypes()) {
+      foreach (Type? type in GetLoadableTypes(targetAssembly)) {
         foreach (MethodInfo? method in type.GetMethods()) {
           if (Attribute.IsDefined(method, testAttribute)) {
             testMethods.Add(method);
@@ -84,6 +84,16 @@ namespace Nanikit.Test {
         }
       }
       return testMethods;
+    }
+
+    private IEnumerable<Type> GetLoadableTypes(Assembly assembly) {
+      try {
+        return assembly.GetTypes();
+      }
+      catch (ReflectionTypeLoadException exception) {
+        _logger?.Error($"{exception}");
+        return exception.Types.Where(t => t != null);
+      }
     }
   }
 

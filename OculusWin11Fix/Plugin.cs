@@ -1,6 +1,7 @@
 namespace OculusWin11Fix {
   using IPA;
-  using Zenject;
+  using OculusWin11Fix.Installers;
+  using SiraUtil.Zenject;
   using IPALogger = IPA.Logging.Logger;
 
   [Plugin(RuntimeOptions.SingleStartInit)]
@@ -11,8 +12,11 @@ namespace OculusWin11Fix {
     /// Only use [Init] with one Constructor.
     /// </summary>
     [Init]
-    public void Setup(IPALogger logger) {
+    public void Setup(IPALogger logger, Zenjector zenjector) {
       _logger = logger;
+
+      zenjector.UseLogger(logger);
+      zenjector.Install<AppInstaller>(Location.App, logger);
     }
 
     [OnStart]
@@ -20,11 +24,6 @@ namespace OculusWin11Fix {
       if (_logger == null) {
         return;
       }
-      _logger.Debug("Initialize()");
-
-      DiContainer container = ProjectContext.Instance.Container.CreateSubContainer();
-      container.BindInterfacesAndSelfTo<IPALogger>().FromInstance(_logger).AsSingle();
-
       _logger.Info("Initialized.");
     }
 
