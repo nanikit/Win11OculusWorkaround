@@ -23,6 +23,13 @@ namespace OculusWin11Fix.External {
         return false;
       }
 
+      if (ShowWindow(windowHandle, WindowShowStyle.SW_RESTORE)) {
+        _logger.Debug($"Console is not minimized.");
+      }
+      else {
+        _logger.Debug($"Restore console window.");
+      }
+
       if (!SetWindowPos(windowHandle, SpecialWindowHandles.HWND_TOPMOST,
         0, 0, 0, 0, _commonPosFlags | SetWindowPosFlags.SWP_SHOWWINDOW)
       ) {

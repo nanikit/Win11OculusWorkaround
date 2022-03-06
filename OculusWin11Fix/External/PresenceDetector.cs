@@ -15,26 +15,45 @@ namespace OculusWin11Fix.External {
 
     public void Initialize() {
       _logger.Debug("PresenceDetector Initialize();");
-      _vrPlatform.inputFocusWasCapturedEvent += DispatchDiveEnd;
-      _vrPlatform.hmdUnmountedEvent += DispatchDiveEnd;
-      _vrPlatform.inputFocusWasReleasedEvent += DispatchDiveStart;
-      _vrPlatform.hmdMountedEvent += DispatchDiveStart;
+      _vrPlatform.inputFocusWasCapturedEvent += OnInputFocusWasCaptured;
+      _vrPlatform.hmdUnmountedEvent += OnHmdUnmounted;
+      _vrPlatform.inputFocusWasReleasedEvent += OnInputFocusWasReleased;
+      _vrPlatform.hmdMountedEvent += OnHmdMounted;
     }
 
     public void Dispose() {
       _logger.Debug("PresenceDetector Dispose();");
-      _vrPlatform.inputFocusWasCapturedEvent -= DispatchDiveEnd;
-      _vrPlatform.hmdUnmountedEvent -= DispatchDiveEnd;
-      _vrPlatform.inputFocusWasReleasedEvent -= DispatchDiveStart;
-      _vrPlatform.hmdMountedEvent -= DispatchDiveStart;
+      _vrPlatform.inputFocusWasCapturedEvent -= OnInputFocusWasCaptured;
+      _vrPlatform.hmdUnmountedEvent -= OnHmdUnmounted;
+      _vrPlatform.inputFocusWasReleasedEvent -= OnInputFocusWasReleased;
+      _vrPlatform.hmdMountedEvent -= OnHmdMounted;
     }
 
     private readonly IPALogger _logger;
     private readonly IVRPlatformHelper _vrPlatform;
     private bool _isDiving;
 
+    private void OnInputFocusWasCaptured() {
+      _logger.Info(nameof(OnInputFocusWasCaptured));
+      DispatchDiveEnd();
+    }
+
+    private void OnInputFocusWasReleased() {
+      _logger.Info(nameof(OnInputFocusWasReleased));
+      DispatchDiveStart();
+    }
+
+    private void OnHmdUnmounted() {
+      _logger.Info(nameof(OnHmdUnmounted));
+      DispatchDiveEnd();
+    }
+
+    private void OnHmdMounted() {
+      _logger.Info(nameof(OnHmdMounted));
+      DispatchDiveStart();
+    }
+
     private void DispatchDiveStart() {
-      _logger.Info("Detected HMD focus gain.");
       if (!_isDiving) {
         _isDiving = true;
         OnPresenceChanged(true);
@@ -42,7 +61,6 @@ namespace OculusWin11Fix.External {
     }
 
     private void DispatchDiveEnd() {
-      _logger.Info("Detected HMD focus lost.");
       if (_isDiving) {
         _isDiving = false;
         OnPresenceChanged(false);
