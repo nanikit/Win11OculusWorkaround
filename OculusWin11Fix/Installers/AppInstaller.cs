@@ -5,7 +5,9 @@ namespace OculusWin11Fix.Installers {
   using Zenject;
   using IPALogger = IPA.Logging.Logger;
 
-  internal class AppInstaller : Installer {
+  public class AppInstaller : Installer {
+    public static string[] TargetProcessNames { get; } = new[] { "steam", "OVRServer_x64" };
+
     public AppInstaller(IPALogger logger) {
       _logger = logger;
     }
@@ -14,8 +16,9 @@ namespace OculusWin11Fix.Installers {
       Container.BindInstance(_logger).AsSingle();
       Container.BindInterfacesAndSelfTo<PresenceDetector>().AsSingle();
       Container.BindInterfacesAndSelfTo<WindowFocusSource>().AsSingle();
-      Container.BindInterfacesAndSelfTo<MainWindowFinder>().AsSingle();
-      Container.BindInterfacesAndSelfTo<ForegroundMaker>().AsSingle();
+      Container.BindInterfacesAndSelfTo<WindowEnumerator>().AsSingle();
+      Container.BindInterfacesAndSelfTo<ForegroundMaker>().AsCached().WithArguments(true).When(x => x.Container.Resolve<IVRPlatformHelper>() is OpenVRHelper);
+      Container.BindInterfacesAndSelfTo<ForegroundMaker>().AsCached().WithArguments(false).When(x => x.Container.Resolve<IVRPlatformHelper>() is not OpenVRHelper);
       Container.BindInterfacesAndSelfTo<FocusForward>().AsSingle().NonLazy();
     }
 

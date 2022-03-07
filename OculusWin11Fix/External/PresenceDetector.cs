@@ -34,29 +34,32 @@ namespace OculusWin11Fix.External {
     private bool _isDiving;
 
     private void OnInputFocusWasCaptured() {
-      _logger.Info(nameof(OnInputFocusWasCaptured));
+      _logger.Debug(nameof(_vrPlatform.inputFocusWasCapturedEvent));
       DispatchDiveEnd();
     }
 
     private void OnInputFocusWasReleased() {
-      _logger.Info(nameof(OnInputFocusWasReleased));
+      _logger.Debug(nameof(_vrPlatform.inputFocusWasReleasedEvent));
       DispatchDiveStart();
     }
 
     private void OnHmdUnmounted() {
-      _logger.Info(nameof(OnHmdUnmounted));
+      _logger.Debug(nameof(_vrPlatform.hmdUnmountedEvent));
       DispatchDiveEnd();
     }
 
     private void OnHmdMounted() {
-      _logger.Info(nameof(OnHmdMounted));
+      _logger.Debug(nameof(_vrPlatform.hmdMountedEvent));
       DispatchDiveStart();
     }
 
     private void DispatchDiveStart() {
+      _logger.Debug(nameof(_vrPlatform.hmdMountedEvent));
       if (!_isDiving) {
+        _logger.Debug($"{nameof(_vrPlatform.hmdMountedEvent): toggle}");
         _isDiving = true;
         OnPresenceChanged(true);
+        _logger.Debug($"{nameof(_vrPlatform.hmdMountedEvent): end}");
       }
     }
 

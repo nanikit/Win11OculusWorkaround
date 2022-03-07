@@ -1,6 +1,7 @@
 namespace OculusWin11Fix.Test {
   using ModestTree;
   using Nanikit.Test;
+  using OculusWin11Fix.Core;
   using OculusWin11Fix.External;
   using OculusWin11Fix.Services;
   using Zenject;
@@ -12,9 +13,9 @@ namespace OculusWin11Fix.Test {
 
       DiContainer container = new();
       container.BindInterfacesAndSelfTo<IPALogger>().FromInstance(logger).AsSingle();
-      container.BindInterfacesAndSelfTo<MainWindowFinder>().AsSingle();
-      container.BindInterfacesAndSelfTo<ForegroundMaker>().AsSingle();
-      _foregroundMaker = container.Resolve<ForegroundMaker>();
+      container.BindInterfacesAndSelfTo<WindowEnumerator>().AsSingle();
+      container.BindInterfacesAndSelfTo<ForegroundMaker>().AsSingle().WithArguments(true);
+      _foregroundMaker = container.Resolve<IForegroundMaker>();
     }
 
     [Test]
@@ -25,6 +26,6 @@ namespace OculusWin11Fix.Test {
     }
 
     private readonly IPALogger _logger;
-    private readonly ForegroundMaker _foregroundMaker;
+    private readonly IForegroundMaker _foregroundMaker;
   }
 }

@@ -14,12 +14,14 @@ namespace OculusWin11Fix.Core {
     public void Initialize() {
       _presenceDetector.OnPresenceChanged += ToggleFocusForward;
       _windowFocusSource.OnFocused += ForwardFocusIfRequired;
-      _logger.Info("Focus forward initialized");
+      _logger.Debug("Focus forward initialized.");
     }
 
     public void Dispose() {
       _windowFocusSource.OnFocused -= ForwardFocusIfRequired;
       _presenceDetector.OnPresenceChanged -= ToggleFocusForward;
+      _foregroundMaker.MakeBackground();
+      _logger.Debug("Focus forward cleared.");
     }
 
     private readonly IPALogger _logger;
@@ -29,6 +31,7 @@ namespace OculusWin11Fix.Core {
     private bool _isDiving;
 
     private void ToggleFocusForward(bool isDiving) {
+      _logger.Debug($"ToggleFocusForward: {isDiving}");
       _isDiving = isDiving;
 
       if (isDiving) {
@@ -40,6 +43,7 @@ namespace OculusWin11Fix.Core {
     }
 
     private void ForwardFocusIfRequired() {
+      _logger.Debug($"ToggleFocusForward: {_isDiving}");
       if (_isDiving) {
         _foregroundMaker.MakeForeground();
       }
