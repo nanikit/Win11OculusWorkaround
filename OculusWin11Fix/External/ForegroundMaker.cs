@@ -20,19 +20,11 @@ namespace OculusWin11Fix.External {
     }
 
     public bool MakeForeground() {
-      if (!FindTargetProcessIds()) {
-        return false;
-      }
-
-      return _windowEnumerator.Enumerate(ShowTargetWindow);
+      return ScanAndApply(MakeTopmost);
     }
 
     public bool MakeBackground() {
-      if (!FindTargetProcessIds()) {
-        return false;
-      }
-
-      return _windowEnumerator.Enumerate(HideTargetWindow);
+      return ScanAndApply(ReleaseTopmost);
     }
 
     private static readonly SetWindowPosFlags _commonPosFlags = SetWindowPosFlags.SWP_NOMOVE
@@ -40,63 +32,83 @@ namespace OculusWin11Fix.External {
     private readonly IPALogger _logger;
     private readonly WindowEnumerator _windowEnumerator;
     private readonly bool _isSteam;
+    private readonly List<IntPtr> _steamWindowHandles = new();
+    private IntPtr _ovrConsoleHandle = IntPtr.Zero;
     private int? _steamProcessId;
     private int? _ovrServerId;
 
-    private bool ShowTargetWindow(IntPtr windowHandle) {
-      switch (DetermineWindow(windowHandle)) {
-      case Target.OVRServer:
-        MakeTopmost(windowHandle, nameof(Target.OVRServer));
-        break;
-      case Target.Steam:
-        MakeTopmost(windowHandle, nameof(Target.Steam));
-        break;
-      };
-      return ShouldEnumeratorContinue();
+    private bool ScanAndApply(Func<IntPtr, string, bool> action) {
+      if (!FindTargetProcessIds()) {
+        return false;
+      }
+
+      _ovrConsoleHandle = IntPtr.Zero;
+      _steamWindowHandles.Clear();
+
+      if (!_windowEnumerator.Enumerate(RecordWindow)) {
+        return false;
+      }
+
+      if (_ovrConsoleHandle == IntPtr.Zero) {
+        _logger.Warn($"Cannot find the {Target.OVRServer.GetName()} window.");
+      }
+      else {
+        action(_ovrConsoleHandle, Target.OVRServer.GetName());
+      }
+
+      if (_isSteam && _steamWindowHandles.Count == 0) {
+        _logger.Warn($"Cannot find the {Target.Steam.GetName()} window.");
+      }
+      else {
+        (IntPtr handle, int _) = _steamWindowHandles.Aggregate(
+          (Handle: IntPtr.Zero, Size: int.MaxValue), (acc, handle) => {
+            _logger.Info($"title: {GetWindowText(handle)}");
+            if (GetClientRect(handle, out RECT area)) {
+              int size = (area.right - area.left) * (area.bottom - area.top);
+              if (size < acc.Size) {
+                return (Handle: handle, Size: size);
+              }
+              else {
+                _logger.Warn($"GetClientRect fail: {GetWindowText(handle)}");
+              }
+            }
+            return (Handle: handle, Size: int.MaxValue);
+          });
+        action(handle, Target.Steam.GetName());
+      }
+
+      return true;
     }
 
-    private bool HideTargetWindow(IntPtr windowHandle) {
-      switch (DetermineWindow(windowHandle)) {
-      case Target.OVRServer:
-        ReleaseTopmost(windowHandle, nameof(Target.OVRServer));
-        break;
-      case Target.Steam:
-        ReleaseTopmost(windowHandle, nameof(Target.Steam));
-        break;
-      };
-      return ShouldEnumeratorContinue();
-    }
-
-    private Target? DetermineWindow(IntPtr windowHandle) {
+    private bool RecordWindow(IntPtr windowHandle) {
       bool isTopLevel = GetWindow(windowHandle, GetWindowCommands.GW_OWNER) == IntPtr.Zero;
       if (!isTopLevel) {
-        return null;
+        return true;
       }
 
       GetWindowThreadProcessId(windowHandle, out int processId);
       if (processId == _ovrServerId && IsWindowVisible(windowHandle)) {
-        return Target.OVRServer;
+        _ovrConsoleHandle = windowHandle;
+        return true;
       }
       else if (processId == _steamProcessId) {
         try {
-          if (GetWindowText(windowHandle) == "Steam") {
-            return Target.Steam;
+          string title = GetWindowText(windowHandle);
+          if (!string.IsNullOrEmpty(title)) {
+            _steamWindowHandles.Add(windowHandle);
           }
         }
         catch (Win32Exception) {
           // Ignore, I don't know why this occurs.
         }
       }
-      return null;
-    }
 
-    private bool ShouldEnumeratorContinue() {
-      return _ovrServerId != null || _steamProcessId != null;
+      return true;
     }
 
     private bool MakeTopmost(IntPtr windowHandle, string name) {
       ShowWindow(windowHandle, WindowShowStyle.SW_RESTORE);
-      if (!SetWindowPos(windowHandle, SpecialWindowHandles.HWND_TOPMOST,
+      if (!SetWindowPos(windowHandle, SpecialWindowHandles.HWND_TOP,
         0, 0, 0, 0, _commonPosFlags | SetWindowPosFlags.SWP_SHOWWINDOW)
       ) {
         _logger.Warn($"{name} SetWindowPos error {Marshal.GetLastWin32Error()}");
@@ -122,14 +134,14 @@ namespace OculusWin11Fix.External {
     private bool FindTargetProcessIds() {
       _ovrServerId = GetProcessByName(Target.OVRServer.GetProcessName())?.Id;
       if (_ovrServerId == null) {
-        _logger.Warn("Cannot find the OVRServer.");
+        _logger.Warn($"Cannot find the {Target.OVRServer.GetProcessName()} process.");
         return false;
       }
 
       if (_isSteam) {
         _steamProcessId = GetProcessByName(Target.Steam.GetProcessName())?.Id;
         if (_steamProcessId == null) {
-          _logger.Warn("Cannot find the steam process.");
+          _logger.Warn($"Cannot find the {Target.Steam.GetProcessName()} process.");
         }
       }
       else {
@@ -167,6 +179,12 @@ namespace OculusWin11Fix.External {
     public static string GetProcessName(this Target target) => target switch {
       Target.OVRServer => "OVRServer_x64",
       Target.Steam => "steam",
+      _ => "",
+    };
+
+    public static string GetName(this Target target) => target switch {
+      Target.OVRServer => "OVRServer",
+      Target.Steam => "Steam",
       _ => "",
     };
   }
