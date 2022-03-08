@@ -1,6 +1,5 @@
 namespace OculusWin11Fix.Installers {
   using HarmonyLib;
-  using IPA.Loader;
   using OculusWin11Fix.Core;
   using OculusWin11Fix.External;
   using OculusWin11Fix.Services;

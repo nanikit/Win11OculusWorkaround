@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="ILRepacker" BeforeTargets="BSMT_AfterBuild">
-
+  <Target Name="ILRepacker" BeforeTargets="BSMT_AfterBuild" Condition="'$(Configuration)'!='DebugOutGame'">
     <ItemGroup>
       <InputAssemblies Include="$(OutputPath)\$(AssemblyName).dll" />
       <InputAssemblies Include="$(OutputPath)\PInvoke*.dll" />
     </ItemGroup>
-
-    <!--<ItemGroup>
-      <InternalizeExclude Include="IPA.Loader" />
-    </ItemGroup>-->
 
     <ILRepack
         Parallel="true"

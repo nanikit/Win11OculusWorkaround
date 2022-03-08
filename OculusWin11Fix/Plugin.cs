@@ -17,11 +17,13 @@ namespace OculusWin11Fix {
     [Init]
     public void Setup(IPALogger logger, Zenjector zenjector, PluginMetadata metadata) {
       _logger = new CustomLogger(logger);
-      var harmony = new Harmony(metadata.Id);
+      Harmony harmony = new(metadata.Id);
 
-      zenjector.UseMetadataBinder<Plugin>();
-      zenjector.UseLogger(logger);
       zenjector.Install<AppInstaller>(Location.App, logger, harmony);
+
+      zenjector.UseLogger(logger);
+      zenjector.UseMetadataBinder<Plugin>();
+
       _logger?.Info("Installed.");
     }
 

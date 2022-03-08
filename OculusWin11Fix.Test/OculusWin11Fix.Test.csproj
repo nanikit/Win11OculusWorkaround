@@ -20,16 +20,21 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DisableZipRelease>True</DisableZipRelease>
-    <Configurations>Debug;Release;DebugTest</Configurations>
+    <DisableCopyToGame>True</DisableCopyToGame>
+    <Configurations>Debug;Release;DebugOutGame;DebugInGame</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'DebugTest'">
+  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
     <OutputPath>bin\Debug</OutputPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='DebugTest'">
+  <PropertyGroup Condition="'$(Configuration)'=='DebugInGame'">
+    <DisableCopyToGame>False</DisableCopyToGame>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='DebugOutGame'">
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
@@ -39,10 +44,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="$(DefineConstants.Contains('CIBuild')) OR '$(NCrunch)' == '1'">
-    <DisableCopyToPlugins>True</DisableCopyToPlugins>
+    <DisableCopyToGame>True</DisableCopyToGame>
   </PropertyGroup>
   <PropertyGroup Condition="'$(NCrunch)' == '1'">
-    <DisableCopyToPlugins>True</DisableCopyToPlugins>
+    <DisableCopyToGame>True</DisableCopyToGame>
     <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
   <ItemGroup>
