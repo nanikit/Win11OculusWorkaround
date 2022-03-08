@@ -14,8 +14,12 @@ namespace OculusWin11Fix.Services {
     public bool Enumerate(Func<IntPtr, bool> predicate) {
       _predicate = predicate;
       if (!EnumWindows(_enumerator, IntPtr.Zero)) {
-        _logger.Warn($"EnumWindows error {Marshal.GetLastWin32Error()}");
-        return false;
+        int error = Marshal.GetLastWin32Error();
+        bool isQuit = error == 0;
+        if (!isQuit) {
+          _logger.Trace($"EnumWindows error {error}");
+          return false;
+        }
       }
       return true;
     }

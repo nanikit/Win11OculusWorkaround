@@ -27,12 +27,17 @@ namespace OculusWin11Fix.External {
       return ScanAndApply(ReleaseTopmost);
     }
 
+    private static readonly string[] _steamFriendWindowTitles = {
+      "Amici", "Amigos", "Arkadaşlar", "Bạn bè", "Barátok", "Contacts", "Freunde",
+      "Friends", "Kaverit", "Přátelé", "Prieteni", "Vänner", "Venner", "Vrienden",
+      "Znajomi", "Φίλοι", "Друзі", "Друзья", "Приятели", "เพื่อน", "친구", "フレンド", "好友",
+    };
     private static readonly SetWindowPosFlags _commonPosFlags = SetWindowPosFlags.SWP_NOMOVE
       | SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_ASYNCWINDOWPOS;
     private readonly IPALogger _logger;
     private readonly WindowEnumerator _windowEnumerator;
     private readonly bool _isSteam;
-    private readonly List<IntPtr> _steamWindowHandles = new();
+    private IntPtr _steamWindowHandle = IntPtr.Zero;
     private IntPtr _ovrConsoleHandle = IntPtr.Zero;
     private int? _steamProcessId;
     private int? _ovrServerId;
@@ -43,9 +48,11 @@ namespace OculusWin11Fix.External {
       }
 
       _ovrConsoleHandle = IntPtr.Zero;
-      _steamWindowHandles.Clear();
+      _steamWindowHandle = IntPtr.Zero;
 
-      if (!_windowEnumerator.Enumerate(RecordWindow)) {
+      bool isSuccess = _windowEnumerator.Enumerate(RecordWindow);
+      if (!isSuccess && Marshal.GetLastWin32Error() != 1300) {
+        _logger.Warn($"EnumWindows failed: {Marshal.GetLastWin32Error()}.");
         return false;
       }
 
@@ -56,54 +63,46 @@ namespace OculusWin11Fix.External {
         action(_ovrConsoleHandle, Target.OVRServer.GetName());
       }
 
-      if (_isSteam && _steamWindowHandles.Count == 0) {
+      if (_isSteam && _steamWindowHandle == IntPtr.Zero) {
         _logger.Warn($"Cannot find the {Target.Steam.GetName()} window.");
       }
       else {
-        (IntPtr handle, int _) = _steamWindowHandles.Aggregate(
-          (Handle: IntPtr.Zero, Size: int.MaxValue), (acc, handle) => {
-            _logger.Info($"title: {GetWindowText(handle)}");
-            if (GetClientRect(handle, out RECT area)) {
-              int size = (area.right - area.left) * (area.bottom - area.top);
-              if (size < acc.Size) {
-                return (Handle: handle, Size: size);
-              }
-              else {
-                _logger.Warn($"GetClientRect fail: {GetWindowText(handle)}");
-              }
-            }
-            return (Handle: handle, Size: int.MaxValue);
-          });
-        action(handle, Target.Steam.GetName());
+        action(_steamWindowHandle, Target.Steam.GetName());
       }
 
       return true;
     }
 
-    private bool RecordWindow(IntPtr windowHandle) {
-      bool isTopLevel = GetWindow(windowHandle, GetWindowCommands.GW_OWNER) == IntPtr.Zero;
-      if (!isTopLevel) {
-        return true;
-      }
 
-      GetWindowThreadProcessId(windowHandle, out int processId);
-      if (processId == _ovrServerId && IsWindowVisible(windowHandle)) {
-        _ovrConsoleHandle = windowHandle;
-        return true;
-      }
-      else if (processId == _steamProcessId) {
-        try {
-          string title = GetWindowText(windowHandle);
-          if (!string.IsNullOrEmpty(title)) {
-            _steamWindowHandles.Add(windowHandle);
+    private bool RecordWindow(IntPtr windowHandle) {
+      try {
+        bool isTopLevel = GetWindow(windowHandle, GetWindowCommands.GW_OWNER) == IntPtr.Zero;
+        if (!isTopLevel) {
+          return true;
+        }
+
+        GetWindowThreadProcessId(windowHandle, out int processId);
+        if (processId == _ovrServerId && IsWindowVisible(windowHandle)) {
+          _ovrConsoleHandle = windowHandle;
+        }
+        else if (processId == _steamProcessId) {
+          try {
+            string title = GetWindowText(windowHandle);
+            if (!string.IsNullOrEmpty(title) && _steamFriendWindowTitles.Contains(title)) {
+              _steamWindowHandle = windowHandle;
+            }
+          }
+          catch (Win32Exception) {
+            // Ignore, I don't know why this occurs.
           }
         }
-        catch (Win32Exception) {
-          // Ignore, I don't know why this occurs.
-        }
-      }
 
-      return true;
+        return _ovrConsoleHandle == IntPtr.Zero || (_isSteam && _steamWindowHandle == IntPtr.Zero);
+      }
+      catch (Exception exception) {
+        _logger.Error(exception);
+        throw exception;
+      }
     }
 
     private bool MakeTopmost(IntPtr windowHandle, string name) {
@@ -114,6 +113,7 @@ namespace OculusWin11Fix.External {
         _logger.Warn($"{name} SetWindowPos error {Marshal.GetLastWin32Error()}");
         return false;
       }
+      SetForegroundWindow(windowHandle);
 
       _logger.Info($"{name} MakeForeground success.");
       return true;
