@@ -95,7 +95,7 @@ namespace OculusWin11Fix.External {
     }
 
     private bool MakeTopmost(IntPtr windowHandle, string name) {
-      bool isPreviouslyVisible = ShowWindow(windowHandle, WindowShowStyle.SW_RESTORE);
+      ShowWindow(windowHandle, WindowShowStyle.SW_RESTORE);
       if (!SetWindowPos(windowHandle, SpecialWindowHandles.HWND_TOPMOST,
         0, 0, 0, 0, _commonPosFlags | SetWindowPosFlags.SWP_SHOWWINDOW)
       ) {
@@ -103,7 +103,7 @@ namespace OculusWin11Fix.External {
         return false;
       }
 
-      _logger.Info($"{name} MakeForeground success{(isPreviouslyVisible ? "" : " with restoration")}");
+      _logger.Info($"{name} MakeForeground success.");
       return true;
     }
 
@@ -115,7 +115,7 @@ namespace OculusWin11Fix.External {
         return false;
       }
 
-      _logger.Info($"{name} MakeBackground success");
+      _logger.Info($"{name} MakeBackground success.");
       return true;
     }
 

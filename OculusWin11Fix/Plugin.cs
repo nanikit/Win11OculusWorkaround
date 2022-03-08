@@ -1,6 +1,9 @@
 namespace OculusWin11Fix {
+  using HarmonyLib;
   using IPA;
+  using IPA.Loader;
   using OculusWin11Fix.Installers;
+  using OculusWin11Fix.Services;
   using SiraUtil.Zenject;
   using IPALogger = IPA.Logging.Logger;
 
@@ -12,19 +15,19 @@ namespace OculusWin11Fix {
     /// Only use [Init] with one Constructor.
     /// </summary>
     [Init]
-    public void Setup(IPALogger logger, Zenjector zenjector) {
-      _logger = logger;
+    public void Setup(IPALogger logger, Zenjector zenjector, PluginMetadata metadata) {
+      _logger = new CustomLogger(logger);
+      var harmony = new Harmony(metadata.Id);
 
+      zenjector.UseMetadataBinder<Plugin>();
       zenjector.UseLogger(logger);
-      zenjector.Install<AppInstaller>(Location.App, logger);
+      zenjector.Install<AppInstaller>(Location.App, logger, harmony);
+      _logger?.Info("Installed.");
     }
 
     [OnStart]
     public void Initialize() {
-      if (_logger == null) {
-        return;
-      }
-      _logger.Info("Initialized.");
+      _logger?.Info("Initialized.");
     }
 
     [OnExit]
