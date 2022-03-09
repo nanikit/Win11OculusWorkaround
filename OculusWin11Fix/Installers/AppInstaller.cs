@@ -1,7 +1,5 @@
 namespace OculusWin11Fix.Installers {
   using HarmonyLib;
-  using OculusWin11Fix.Core;
-  using OculusWin11Fix.External;
   using OculusWin11Fix.Services;
   using Zenject;
   using IPALogger = IPA.Logging.Logger;
@@ -13,30 +11,15 @@ namespace OculusWin11Fix.Installers {
     }
 
     public override void InstallBindings() {
-      Container.Bind<IPALogger>().FromInstance(_logger).AsSingle();
+      Container.Bind<IPALogger>().FromInstance(new CustomLogger(_logger)).AsCached();
 
-      Container.Bind<Harmony>().AsSingle().WithArguments(_harmony.Id);
+      Container.Install<ForegrounderInstaller>(new object[] { _logger, _harmony });
+      Container.Install<SoundSwitchInstaller>(new object[] { _logger });
 
-      Container.BindInterfacesAndSelfTo<PresenceDetector>().AsSingle();
-      Container.BindInterfacesAndSelfTo<WindowFocusSource>().AsSingle();
-      Container.BindInterfacesAndSelfTo<WindowEnumerator>().AsSingle();
-
-      Container.Bind<bool>().FromMethod(ResolveVRPlatformHelper).AsSingle().WhenInjectedInto<ForegroundMaker>();
-      Container.BindInterfacesAndSelfTo<ForegroundMaker>().AsSingle();
-
-      Container.BindInterfacesAndSelfTo<FocusForward>().AsSingle().NonLazy();
-      _logger.Trace("AppInstaller done.");
+      _logger.Trace($"Finished installation.");
     }
 
     private readonly IPALogger _logger;
     private readonly Harmony _harmony;
-
-    private bool ResolveVRPlatformHelper() {
-      if (Container.HasBinding<IVRPlatformHelper>()) {
-        return Container.Resolve<IVRPlatformHelper>() is OpenVRHelper;
-      }
-      // Running on test.
-      return true;
-    }
   }
 }

@@ -88,6 +88,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
+    <PackageReference Include="NAudio.Wasapi" Version="2.0.0" />
     <PackageReference Include="PInvoke.User32" Version="0.7.104" />
   </ItemGroup>
 

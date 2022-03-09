@@ -3,7 +3,8 @@
   <Target Name="ILRepacker" BeforeTargets="BSMT_AfterBuild" Condition="'$(Configuration)'!='DebugOutGame'">
     <ItemGroup>
       <InputAssemblies Include="$(OutputPath)\$(AssemblyName).dll" />
-      <InputAssemblies Include="$(OutputPath)\PInvoke*.dll" />
+      <InputAssemblies Include="$(OutputPath)\PInvoke.*.dll" />
+      <InputAssemblies Include="$(OutputPath)\NAudio.*.dll" />
     </ItemGroup>
 
     <ILRepack
