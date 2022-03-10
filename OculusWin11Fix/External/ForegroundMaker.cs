@@ -10,13 +10,11 @@ namespace OculusWin11Fix.External {
   using static PInvoke.User32;
   using IPALogger = IPA.Logging.Logger;
 
-  public class ForegroundMaker : IForegroundMaker {
+  public class ForegroundMaker : IForegroundMaker, IDisposable {
 
-    public ForegroundMaker(IPALogger logger, WindowEnumerator finder, bool isSteam) {
+    public ForegroundMaker(IPALogger logger, WindowEnumerator finder) {
       _logger = logger;
       _windowEnumerator = finder;
-      _isSteam = isSteam;
-      logger.Info($"isSteam: {isSteam}");
     }
 
     public bool MakeForeground() {
@@ -24,31 +22,23 @@ namespace OculusWin11Fix.External {
     }
 
     public bool MakeBackground() {
-      return ScanAndApply(ReleaseTopmost);
+      return true;
     }
 
-    private static readonly string[] _steamFriendWindowTitles = {
-      "Amici", "Amigos", "Arkadaşlar", "Bạn bè", "Barátok", "Contacts", "Freunde",
-      "Friends", "Kaverit", "Přátelé", "Prieteni", "Vänner", "Venner", "Vrienden",
-      "Znajomi", "Φίλοι", "Друзі", "Друзья", "Приятели", "เพื่อน", "친구", "フレンド", "好友",
-    };
+    public void Dispose() {
+      ScanAndApply(ReleaseTopmost);
+    }
+
     private static readonly SetWindowPosFlags _commonPosFlags = SetWindowPosFlags.SWP_NOMOVE
       | SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_ASYNCWINDOWPOS;
     private readonly IPALogger _logger;
     private readonly WindowEnumerator _windowEnumerator;
-    private readonly bool _isSteam;
-    private IntPtr _steamWindowHandle = IntPtr.Zero;
-    private IntPtr _ovrConsoleHandle = IntPtr.Zero;
-    private int? _steamProcessId;
-    private int? _ovrServerId;
+    private readonly List<IntPtr> _accessDenieds = new();
+    private readonly List<IntPtr> _mainWindows = new();
 
     private bool ScanAndApply(Func<IntPtr, string, bool> action) {
-      if (!FindTargetProcessIds()) {
-        return false;
-      }
-
-      _ovrConsoleHandle = IntPtr.Zero;
-      _steamWindowHandle = IntPtr.Zero;
+      _accessDenieds.Clear();
+      _mainWindows.Clear();
 
       bool isSuccess = _windowEnumerator.Enumerate(RecordWindow);
       if (!isSuccess && Marshal.GetLastWin32Error() != 1300) {
@@ -56,20 +46,43 @@ namespace OculusWin11Fix.External {
         return false;
       }
 
-      if (_ovrConsoleHandle == IntPtr.Zero) {
-        _logger.Warn($"Cannot find the {Target.OVRServer.GetName()} window.");
-      }
-      else {
-        action(_ovrConsoleHandle, Target.OVRServer.GetName());
+      if (_accessDenieds.Count != 0) {
+        _logger.Trace($"Access denied {_accessDenieds.Count} windows.");
       }
 
-      if (_isSteam && _steamWindowHandle == IntPtr.Zero) {
-        _logger.Warn($"Cannot find the {Target.Steam.GetName()} window.");
-      }
-      else {
-        action(_steamWindowHandle, Target.Steam.GetName());
+      var current = Process.GetCurrentProcess();
+      _logger.Debug($"Current process ID: {current.Id}");
+      var processToWindows = _mainWindows.GroupBy(handle => {
+        GetWindowThreadProcessId(handle, out int processId);
+        try {
+          var process = Process.GetProcessById(processId);
+          return process;
+        }
+        catch {
+          return null;
+        }
+      }).OrderBy(x => (x.Key?.Id) != current.Id);
+
+      foreach (var process in processToWindows) {
+        if (process.Key == null) {
+          continue;
+        }
+
+        _logger.Debug($"{process.Key} -> {process.Aggregate("", (acc, x) => $"{acc}, {GetWindowText(x)}")}");
+        string name = process.Key.ProcessName;
+        bool isBeatSaber = process.Key.Id == current.Id;
+        if (name == Target.OVRServer.GetProcessName() || isBeatSaber) {
+          action(process.First(), name);
+        }
+        else if (name == "vrmonitor") {
+          action(process.First(), name);
+        }
+        else if (name.Contains("VirtualMotionCapture") || name.Contains("obs64")) {
+          action(process.First(), name);
+        }
       }
 
+      _logger.Info("Scan finished");
       return true;
     }
 
@@ -80,40 +93,35 @@ namespace OculusWin11Fix.External {
         if (!isTopLevel) {
           return true;
         }
-
-        GetWindowThreadProcessId(windowHandle, out int processId);
-        if (processId == _ovrServerId && IsWindowVisible(windowHandle)) {
-          _ovrConsoleHandle = windowHandle;
-        }
-        else if (processId == _steamProcessId) {
-          try {
-            string title = GetWindowText(windowHandle);
-            if (!string.IsNullOrEmpty(title) && _steamFriendWindowTitles.Contains(title)) {
-              _steamWindowHandle = windowHandle;
-            }
-          }
-          catch (Win32Exception) {
-            // Ignore, I don't know why this occurs.
-          }
+        if (!IsWindowVisible(windowHandle)) {
+          return true;
         }
 
-        return _ovrConsoleHandle == IntPtr.Zero || (_isSteam && _steamWindowHandle == IntPtr.Zero);
+        // Access can be denied.
+        GetWindowText(windowHandle);
+
+        _mainWindows.Add(windowHandle);
+        return true;
+      }
+      catch (Win32Exception exception) when (exception.ErrorCode == (HResult)0x80004005) {
+        _accessDenieds.Add(windowHandle);
+        return true;
       }
       catch (Exception exception) {
         _logger.Error(exception);
-        throw exception;
+        return true;
       }
     }
 
     private bool MakeTopmost(IntPtr windowHandle, string name) {
       ShowWindow(windowHandle, WindowShowStyle.SW_RESTORE);
-      if (!SetWindowPos(windowHandle, SpecialWindowHandles.HWND_TOP,
+      SetForegroundWindow(windowHandle);
+      if (!SetWindowPos(windowHandle, SpecialWindowHandles.HWND_TOPMOST,
         0, 0, 0, 0, _commonPosFlags | SetWindowPosFlags.SWP_SHOWWINDOW)
       ) {
         _logger.Warn($"{name} SetWindowPos error {Marshal.GetLastWin32Error()}");
         return false;
       }
-      SetForegroundWindow(windowHandle);
 
       _logger.Info($"{name} MakeForeground success.");
       return true;
@@ -129,44 +137,6 @@ namespace OculusWin11Fix.External {
 
       _logger.Info($"{name} MakeBackground success.");
       return true;
-    }
-
-    private bool FindTargetProcessIds() {
-      _ovrServerId = GetProcessByName(Target.OVRServer.GetProcessName())?.Id;
-      if (_ovrServerId == null) {
-        _logger.Warn($"Cannot find the {Target.OVRServer.GetProcessName()} process.");
-        return false;
-      }
-
-      if (_isSteam) {
-        _steamProcessId = GetProcessByName(Target.Steam.GetProcessName())?.Id;
-        if (_steamProcessId == null) {
-          _logger.Warn($"Cannot find the {Target.Steam.GetProcessName()} process.");
-        }
-      }
-      else {
-        _steamProcessId = null;
-      }
-
-      return true;
-    }
-
-    private Process? GetProcessByName(string processName) {
-      var processes = FindProcessByName(processName).ToList();
-      if (processes.Count == 0) {
-        string list = Process.GetProcesses().Select(p => $"{p.ProcessName}\t{p.Id}").Aggregate((a, b) => $"{a}\n{b}");
-        _logger.Trace($"No process {processName} found.\n${list}");
-        return null;
-      }
-      if (processes.Count > 1) {
-        string list = processes.Select(p => $"{p.ProcessName}\t{p.Id}").Aggregate((a, b) => $"{a}, {b}");
-        _logger.Trace($"There are multiple processes having name {processName}: {list}");
-      }
-      return processes[0];
-    }
-
-    private static IEnumerable<Process> FindProcessByName(string name) {
-      return Process.GetProcesses().Where(p => p.ProcessName == name);
     }
   }
 

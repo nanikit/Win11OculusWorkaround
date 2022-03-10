@@ -25,7 +25,7 @@ namespace OculusWin11Fix.Services {
     private static string Caller {
       get {
         // 0: StackFrame constructor, 1: this.Callter, 2: this.Log
-        MethodBase method = new StackFrame(3).GetMethod();
+        var method = new StackFrame(3).GetMethod();
         return $"{method.DeclaringType.Name}.{method.Name}";
       }
     }

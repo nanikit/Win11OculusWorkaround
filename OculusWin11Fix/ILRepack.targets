@@ -5,6 +5,7 @@
       <InputAssemblies Include="$(OutputPath)\$(AssemblyName).dll" />
       <InputAssemblies Include="$(OutputPath)\PInvoke.*.dll" />
       <InputAssemblies Include="$(OutputPath)\NAudio.*.dll" />
+      <InputAssemblies Include="$(OutputPath)\SimpleExec.dll" />
     </ItemGroup>
 
     <ILRepack

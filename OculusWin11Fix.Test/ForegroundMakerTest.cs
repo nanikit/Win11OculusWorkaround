@@ -1,5 +1,4 @@
 namespace OculusWin11Fix.Test {
-  using HarmonyLib;
   using ModestTree;
   using Nanikit.Test;
   using OculusWin11Fix.Core;
@@ -13,11 +12,11 @@ namespace OculusWin11Fix.Test {
       _logger = new CustomLogger(logger);
 
       DiContainer container = new();
-      container.Install<ForegrounderInstaller>(new object[] { _logger, new Harmony("OculusWin11Fix.Test") });
+      container.Install<ForegrounderInstaller>(new object[] { _logger });
       _foregroundMaker = container.Resolve<IForegroundMaker>();
     }
 
-    //[Test]
+    [Test]
     public void TestToggle() {
       Assert.That(_foregroundMaker.MakeForeground(), "MakeForeground() failed");
       Assert.That(_foregroundMaker.MakeBackground(), "MakeBackground() failed");

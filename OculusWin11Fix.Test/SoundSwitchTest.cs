@@ -1,7 +1,8 @@
 namespace OculusWin11Fix.Test {
   using Nanikit.Test;
-  using OculusWin11Fix.Installers;
+  using OculusWin11Fix.External;
   using OculusWin11Fix.Services;
+  using System.Threading.Tasks;
   using Zenject;
   using IPALogger = IPA.Logging.Logger;
 
@@ -10,14 +11,14 @@ namespace OculusWin11Fix.Test {
       _logger = new CustomLogger(logger);
 
       DiContainer container = new();
-      container.Install<SoundSwitchInstaller>(new object[] { _logger });
+      container.BindInterfacesAndSelfTo<DefaultAudioSwitcher>().AsSingle();
+      container.Bind<IPALogger>().FromInstance(_logger);
       _switcher = container.Resolve<DefaultAudioSwitcher>();
     }
 
     [Test]
-    public void TestToggle() {
-      _switcher.Initialize();
-      _switcher.Dispose();
+    public async Task TestToggle() {
+      await _switcher.ExcludeOculusFromDefault().ConfigureAwait(false);
       _logger.Debug("done");
     }
 
