@@ -20,8 +20,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DisableZipRelease>True</DisableZipRelease>
-    <DisableCopyToGame>True</DisableCopyToGame>
-    <Configurations>Debug;Release;DebugOutGame;DebugInGame</Configurations>
+    <Configurations>Exe;Lib</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
@@ -30,17 +29,12 @@
     <OutputPath>bin\Debug</OutputPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='DebugInGame'">
+  <PropertyGroup Condition="'$(Configuration)'=='Lib'">
     <DisableCopyToGame>False</DisableCopyToGame>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='DebugOutGame'">
+  <PropertyGroup Condition="'$(Configuration)'=='Exe'">
     <OutputType>Exe</OutputType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>none</DebugType>
-    <OutputPath>bin\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(DefineConstants.Contains('CIBuild')) OR '$(NCrunch)' == '1'">

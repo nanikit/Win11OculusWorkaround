@@ -18,12 +18,12 @@
     <Description></Description>
     <Platforms>x64</Platforms>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <GenerateManifest>true</GenerateManifest>
-    <Configurations>Debug;Release;DebugOutGame</Configurations>
+    <Configurations>Debug;Release;TestOutGame</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+  <PropertyGroup Condition="'$(Configuration)' != 'Release'">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
     <OutputPath>bin\Debug</OutputPath>
