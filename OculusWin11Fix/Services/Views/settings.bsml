@@ -1,0 +1,5 @@
+<settings-container>
+  <horizontal horizontal-fit="PreferredSize">
+    <checkbox-setting apply-on-change="true" value="EnableSoundWorkaround" text="Set non oculus device to default audio"/>
+  </horizontal>
+</settings-container>

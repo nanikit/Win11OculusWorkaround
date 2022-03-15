@@ -16,12 +16,15 @@ namespace OculusWin11Fix.External {
   using IPALogger = IPA.Logging.Logger;
 
   public class DefaultAudioSwitcher : IForegroundMaker {
-    public DefaultAudioSwitcher(IPALogger logger) {
+    public DefaultAudioSwitcher(IPALogger logger, Configuration configuration) {
       _logger = logger;
+      _configuration = configuration;
     }
 
     public bool MakeForeground() {
-      _ = ExcludeOculusFromDefault();
+      if (_configuration.EnableSoundWorkaround) {
+        _ = ExcludeOculusFromDefault();
+      }
       return true;
     }
 
@@ -73,6 +76,7 @@ namespace OculusWin11Fix.External {
     private static readonly string _svvPath = Path.Combine(UnityGame.LibraryPath, "SoundVolumeView.exe");
 
     private readonly IPALogger _logger;
+    private readonly Configuration _configuration;
 
     private async Task RunSoundVolumeViewRow(string args) {
       try {
