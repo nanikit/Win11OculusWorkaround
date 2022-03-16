@@ -49,40 +49,55 @@ namespace OculusWin11Fix.External {
     private bool _isDiving;
 
     private void OnInputFocusWasCaptured() {
-      _logger.Debug(nameof(_vrPlatform.inputFocusWasCapturedEvent));
+      _logger.Debug("fired.");
       DispatchDiveEnd();
     }
 
     private void OnInputFocusWasReleased() {
-      _logger.Debug(nameof(_vrPlatform.inputFocusWasReleasedEvent));
+      _logger.Debug("fired.");
       DispatchDiveStart();
     }
 
     private void OnHmdUnmounted() {
-      _logger.Debug(nameof(_vrPlatform.hmdUnmountedEvent));
+      _logger.Debug("fired.");
       DispatchDiveEnd();
     }
 
     private void OnHmdMounted() {
-      _logger.Debug(nameof(_vrPlatform.hmdMountedEvent));
+      _logger.Debug("fired.");
       DispatchDiveStart();
     }
 
     private void DispatchDiveStart() {
-      _logger.Debug(nameof(_vrPlatform.hmdMountedEvent));
-      if (!_isDiving) {
-        _logger.Debug($"{nameof(_vrPlatform.hmdMountedEvent): toggle}");
-        _isDiving = true;
-        OnPresenceChanged(true);
-        _logger.Debug($"{nameof(_vrPlatform.hmdMountedEvent): end}");
+      if (_isDiving) {
+        _logger.Debug($"already diving, exit.");
+        return;
       }
+
+      _isDiving = true;
+      try {
+        OnPresenceChanged(true);
+      }
+      catch (Exception exception) {
+        _logger.Error(exception);
+      }
+      _logger.Debug($"finished.");
     }
 
     private void DispatchDiveEnd() {
-      if (_isDiving) {
-        _isDiving = false;
+      if (!_isDiving) {
+        _logger.Debug($"not diving, exit.");
+        return;
+      }
+
+      _isDiving = false;
+      try {
         OnPresenceChanged(false);
       }
+      catch (Exception exception) {
+        _logger.Error(exception);
+      }
+      _logger.Debug($"finished.");
     }
   }
 }

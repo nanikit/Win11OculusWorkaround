@@ -29,8 +29,8 @@ namespace OculusWin11Fix.External {
       ScanAndApply(ReleaseTopmost);
     }
 
-    private static readonly SetWindowPosFlags _commonPosFlags = SetWindowPosFlags.SWP_NOMOVE
-      | SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_ASYNCWINDOWPOS;
+    private static readonly SetWindowPosFlags _commonPosFlags =
+      SetWindowPosFlags.SWP_NOMOVE | SetWindowPosFlags.SWP_NOSIZE;
     private readonly IPALogger _logger;
     private readonly WindowEnumerator _windowEnumerator;
     private readonly List<IntPtr> _accessDenieds = new();

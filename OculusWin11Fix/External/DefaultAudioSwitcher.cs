@@ -23,13 +23,25 @@ namespace OculusWin11Fix.External {
 
     public bool MakeForeground() {
       if (_configuration.EnableSoundWorkaround) {
-        _ = ExcludeOculusFromDefault();
+        _ = ExcludeOculusWithGuard();
+      }
+      else {
+        _logger.Debug("Skip audio workaround by configuration.");
       }
       return true;
     }
 
     public bool MakeBackground() {
       return true;
+    }
+
+    public async Task ExcludeOculusWithGuard() {
+      try {
+        await ExcludeOculusFromDefault().ConfigureAwait(false);
+      }
+      catch (Exception exception) {
+        _logger.Error(exception);
+      }
     }
 
     public async Task ExcludeOculusFromDefault() {

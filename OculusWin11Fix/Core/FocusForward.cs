@@ -17,7 +17,7 @@ namespace OculusWin11Fix.Core {
     public void Initialize() {
       _presenceDetector.OnPresenceChanged += ToggleFocusForward;
       _windowFocusSource.OnFocused += ForwardFocusIfRequired;
-      _logger.Debug("Focus forward initialized.");
+      _logger.Debug($"Focus forward initialized. foregrounders.Count: {_foregroundMakers.Count}");
     }
 
     public void Dispose() {

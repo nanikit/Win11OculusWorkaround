@@ -34,7 +34,7 @@ namespace OculusWin11Fix.Installers {
       _logger.Trace($"Finished installation.");
     }
 
-    private readonly IPALogger _logger;
+    private readonly CustomLogger _logger;
     private readonly PluginMetadata _metadata;
     private readonly Configuration _configuration;
   }
