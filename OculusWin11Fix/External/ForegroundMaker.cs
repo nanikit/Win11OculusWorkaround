@@ -68,10 +68,10 @@ namespace OculusWin11Fix.External {
           continue;
         }
 
-        _logger.Debug($"{process.Key} -> {process.Aggregate("", (acc, x) => $"{acc}, {GetWindowText(x)}")}");
+        _logger.Debug($"{process.Key} -> {string.Join(", ", process.Select(GetWindowText))}");
         string name = process.Key.ProcessName;
-        bool isBeatSaber = process.Key.Id == current.Id;
-        if (name == Target.OVRServer.GetProcessName() || isBeatSaber) {
+        bool isCurrentProcess = process.Key.Id == current.Id;
+        if (name == Target.OVRServer.GetProcessName() || isCurrentProcess) {
           action(process.First(), name);
         }
         else if (name == "vrmonitor") {

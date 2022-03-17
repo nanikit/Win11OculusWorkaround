@@ -11,8 +11,9 @@ namespace OculusWin11Fix.Test {
       _logger = new CustomLogger(logger);
 
       DiContainer container = new();
-      container.BindInterfacesAndSelfTo<DefaultAudioSwitcher>().AsSingle();
       container.Bind<IPALogger>().FromInstance(_logger);
+      container.Bind<Configuration>().FromInstance(new Configuration() { EnableSoundWorkaround = true });
+      container.BindInterfacesAndSelfTo<DefaultAudioSwitcher>().AsSingle();
       _switcher = container.Resolve<DefaultAudioSwitcher>();
     }
 

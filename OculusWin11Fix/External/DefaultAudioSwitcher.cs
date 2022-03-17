@@ -114,8 +114,8 @@ namespace OculusWin11Fix.External {
         });
 
       nonOculus.Sort(PreferRealDevice);
-      _logger.Debug($"Default {direction} devices:{directedDevices.Where(IsDefault).Aggregate("", (acc, x) => $"{acc}, {x.Name}_{x.DeviceName}")}");
-      _logger.Debug($"All {direction} device candidates:{nonOculus.Aggregate("", (acc, x) => $"{acc}, {x.Name}_{x.DeviceName}")}");
+      _logger.Debug($"Default {direction} devices: {string.Join(", ", directedDevices.Where(IsDefault).Select(x => $"{x.Name}_{x.DeviceName}"))}");
+      _logger.Debug($"All {direction} device candidates: {string.Join(", ", nonOculus.Select(x => $"{x.Name}_{x.DeviceName}"))}");
       return (oculus.FirstOrDefault(), nonOculus.FirstOrDefault());
     }
 
