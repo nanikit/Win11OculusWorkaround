@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace OculusWin11Fix.Services {
   using System.IO;
   using System.Text;
@@ -11,4 +13,13 @@ namespace OculusWin11Fix.Services {
       return await reader.ReadToEndAsync().ConfigureAwait(false);
     }
   }
+}
+
+namespace System.Runtime.CompilerServices {
+  /// <summary>
+  /// Workaround for missing record feature.
+  /// https://stackoverflow.com/a/62656145
+  /// </summary>
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  internal class IsExternalInit { }
 }

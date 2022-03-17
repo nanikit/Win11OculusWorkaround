@@ -12,7 +12,7 @@ namespace OculusWin11Fix.Installers {
     public override void InstallBindings() {
       Container.Bind<IPALogger>().FromInstance(_logger).AsCached().IfNotBound();
 
-      Container.BindInterfacesAndSelfTo<WindowEnumerator>().AsSingle();
+      Container.BindInterfacesAndSelfTo<InterestWindowEnumerator>().AsSingle();
       Container.BindInterfacesAndSelfTo<ForegroundMaker>().AsSingle();
 
       _logger.Trace("Finished installation.");

@@ -1,9 +1,7 @@
 namespace OculusWin11Fix.External {
   using OculusWin11Fix.Core;
   using OculusWin11Fix.Services;
-  using PInvoke;
   using System;
-  using System.Collections.Generic;
   using System.Diagnostics;
   using System.Linq;
   using System.Runtime.InteropServices;
@@ -12,7 +10,7 @@ namespace OculusWin11Fix.External {
 
   public class ForegroundMaker : IForegroundMaker, IDisposable {
 
-    public ForegroundMaker(IPALogger logger, WindowEnumerator finder) {
+    public ForegroundMaker(IPALogger logger, InterestWindowEnumerator finder) {
       _logger = logger;
       _windowEnumerator = finder;
     }
@@ -32,53 +30,27 @@ namespace OculusWin11Fix.External {
     private static readonly SetWindowPosFlags _commonPosFlags =
       SetWindowPosFlags.SWP_NOMOVE | SetWindowPosFlags.SWP_NOSIZE;
     private readonly IPALogger _logger;
-    private readonly WindowEnumerator _windowEnumerator;
-    private readonly List<IntPtr> _accessDenieds = new();
-    private readonly List<IntPtr> _mainWindows = new();
+    private readonly InterestWindowEnumerator _windowEnumerator;
+    private readonly int _currentPid = Process.GetCurrentProcess().Id;
 
     private bool ScanAndApply(Func<IntPtr, string, bool> action) {
-      _accessDenieds.Clear();
-      _mainWindows.Clear();
-
-      bool isSuccess = _windowEnumerator.Enumerate(RecordWindow);
-      if (!isSuccess && Marshal.GetLastWin32Error() != 1300) {
-        _logger.Warn($"EnumWindows failed: {Marshal.GetLastWin32Error()}.");
+      var windows = _windowEnumerator.Enumerate();
+      if (windows == null) {
         return false;
       }
 
-      if (_accessDenieds.Count != 0) {
-        _logger.Trace($"Access denied {_accessDenieds.Count} windows.");
-      }
+      var processToWindows = windows
+        .Where(x => !x.Process.ProcessName.ToLower().StartsWith("explorer") && IsNotTrivialTitle(x.Title))
+        .GroupBy(x => x.Process)
+        .OrderBy(x => GetProcessPriority(x.Key));
 
-      var current = Process.GetCurrentProcess();
-      _logger.Debug($"Current process ID: {current.Id}");
-      var processToWindows = _mainWindows.GroupBy(handle => {
-        GetWindowThreadProcessId(handle, out int processId);
-        try {
-          var process = Process.GetProcessById(processId);
-          return process;
-        }
-        catch {
-          return null;
-        }
-      }).OrderBy(x => (x.Key?.Id) != current.Id);
-
-      foreach (var process in processToWindows) {
-        if (process.Key == null) {
-          continue;
-        }
-
-        _logger.Debug($"{process.Key} -> {string.Join(", ", process.Select(GetWindowText))}");
-        string name = process.Key.ProcessName;
-        bool isCurrentProcess = process.Key.Id == current.Id;
-        if (name == Target.OVRServer.GetProcessName() || isCurrentProcess) {
-          action(process.First(), name);
-        }
-        else if (name == "vrmonitor") {
-          action(process.First(), name);
-        }
-        else if (name.Contains("VirtualMotionCapture") || name.Contains("obs64")) {
-          action(process.First(), name);
+      foreach (var group in processToWindows) {
+        string name = group.Key.ProcessName;
+        _logger.Debug($"{name} -> {string.Join(", ", group.Select(x => x.Title))}");
+        bool isCurrentProcess = group.Key.Id == _currentPid;
+        if (name == Target.OVRServer.GetProcessName() || isCurrentProcess
+          || name == "vrmonitor" || name == "VirtualMotionCapture" || name.Contains("obs64")) {
+          action(group.First().Handle, name);
         }
       }
 
@@ -86,31 +58,19 @@ namespace OculusWin11Fix.External {
       return true;
     }
 
-
-    private bool RecordWindow(IntPtr windowHandle) {
-      try {
-        bool isTopLevel = GetWindow(windowHandle, GetWindowCommands.GW_OWNER) == IntPtr.Zero;
-        if (!isTopLevel) {
-          return true;
-        }
-        if (!IsWindowVisible(windowHandle)) {
-          return true;
-        }
-
-        // Access can be denied.
-        GetWindowText(windowHandle);
-
-        _mainWindows.Add(windowHandle);
-        return true;
+    private int GetProcessPriority(Process process) {
+      if (process.Id == _currentPid) {
+        return 0;
       }
-      catch (Win32Exception exception) when (exception.ErrorCode == (HResult)0x80004005) {
-        _accessDenieds.Add(windowHandle);
-        return true;
+      if (process.ProcessName == Target.OVRServer.GetProcessName()) {
+        return 2;
       }
-      catch (Exception exception) {
-        _logger.Error(exception);
-        return true;
-      }
+      return 1;
+    }
+
+    private static bool IsNotTrivialTitle(string title) {
+      bool isTrivial = title == "Default IME" || title == "MSCTFIME UI";
+      return !isTrivial;
     }
 
     private bool MakeTopmost(IntPtr windowHandle, string name) {
