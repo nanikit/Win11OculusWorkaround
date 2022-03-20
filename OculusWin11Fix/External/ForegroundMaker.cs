@@ -46,7 +46,7 @@ namespace OculusWin11Fix.External {
 
       foreach (var group in processToWindows) {
         string name = group.Key.ProcessName;
-        _logger.Debug($"{name} -> {string.Join(", ", group.Select(x => x.Title))}");
+        _logger.Trace($"{name} -> {string.Join(", ", group.Select(x => x.Title))}");
         bool isCurrentProcess = group.Key.Id == _currentPid;
         if (name == Target.OVRServer.GetProcessName() || isCurrentProcess
           || name == "vrmonitor" || name == "VirtualMotionCapture" || name.Contains("obs64")) {
@@ -54,7 +54,7 @@ namespace OculusWin11Fix.External {
         }
       }
 
-      _logger.Info("Scan finished");
+      _logger.Info("Window scan finished");
       return true;
     }
 
@@ -68,11 +68,6 @@ namespace OculusWin11Fix.External {
       return 1;
     }
 
-    private static bool IsNotTrivialTitle(string title) {
-      bool isTrivial = title == "Default IME" || title == "MSCTFIME UI";
-      return !isTrivial;
-    }
-
     private bool MakeTopmost(IntPtr windowHandle, string name) {
       ShowWindow(windowHandle, WindowShowStyle.SW_RESTORE);
       SetForegroundWindow(windowHandle);
@@ -83,7 +78,7 @@ namespace OculusWin11Fix.External {
         return false;
       }
 
-      _logger.Info($"{name} MakeForeground success.");
+      _logger.Debug($"{name} MakeForeground success.");
       return true;
     }
 
@@ -97,6 +92,10 @@ namespace OculusWin11Fix.External {
 
       _logger.Info($"{name} MakeBackground success.");
       return true;
+    }
+    private static bool IsNotTrivialTitle(string title) {
+      bool isTrivial = title == "Default IME" || title == "MSCTFIME UI";
+      return !isTrivial;
     }
   }
 
