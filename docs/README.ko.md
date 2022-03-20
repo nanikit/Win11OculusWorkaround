@@ -1,4 +1,4 @@
-# OculusWin11Fix
+# Win11OculusWorkaround
 
 오큘러스 윈도 11 끊김 현상 대책을 자동으로 적용해주는 모드입니다.
 

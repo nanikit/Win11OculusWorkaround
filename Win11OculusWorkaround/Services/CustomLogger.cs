@@ -1,4 +1,4 @@
-namespace OculusWin11Fix.Services {
+namespace Win11OculusWorkaround.Services {
   using System.Diagnostics;
   using System.Reflection;
   using IPALogger = IPA.Logging.Logger;

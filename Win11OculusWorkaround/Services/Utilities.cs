@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace OculusWin11Fix.Services {
+namespace Win11OculusWorkaround.Services {
   using System.IO;
   using System.Text;
   using System.Threading.Tasks;

@@ -1,6 +1,6 @@
-namespace OculusWin11Fix.External {
-  using OculusWin11Fix.Core;
-  using OculusWin11Fix.Services;
+namespace Win11OculusWorkaround.External {
+  using Win11OculusWorkaround.Core;
+  using Win11OculusWorkaround.Services;
   using System;
   using System.Diagnostics;
   using System.Linq;

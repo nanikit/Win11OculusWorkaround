@@ -1,6 +1,6 @@
-namespace OculusWin11Fix.Installers {
-  using OculusWin11Fix.External;
-  using OculusWin11Fix.Services;
+namespace Win11OculusWorkaround.Installers {
+  using Win11OculusWorkaround.External;
+  using Win11OculusWorkaround.Services;
   using Zenject;
   using IPALogger = IPA.Logging.Logger;
 

@@ -1,4 +1,4 @@
-namespace OculusWin11Fix.Services {
+namespace Win11OculusWorkaround.Services {
   using Newtonsoft.Json;
   using Newtonsoft.Json.Converters;
   using System;

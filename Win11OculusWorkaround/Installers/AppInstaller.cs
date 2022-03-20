@@ -1,10 +1,10 @@
-namespace OculusWin11Fix.Installers {
+namespace Win11OculusWorkaround.Installers {
   using BeatSaberMarkupLanguage.Settings;
   using HarmonyLib;
   using IPA.Loader;
-  using OculusWin11Fix.Core;
-  using OculusWin11Fix.External;
-  using OculusWin11Fix.Services;
+  using Win11OculusWorkaround.Core;
+  using Win11OculusWorkaround.External;
+  using Win11OculusWorkaround.Services;
   using Zenject;
   using IPALogger = IPA.Logging.Logger;
 
@@ -19,7 +19,7 @@ namespace OculusWin11Fix.Installers {
       Container.Bind<IPALogger>().FromInstance(_logger).AsCached().IfNotBound();
 
       Container.BindInstance(_configuration).AsSingle();
-      BSMLSettings.instance.AddSettingsMenu(_metadata.Name, "OculusWin11Fix.Services.Views.settings.bsml", _configuration);
+      BSMLSettings.instance.AddSettingsMenu(_metadata.Name, "Win11OculusWorkaround.Services.Views.settings.bsml", _configuration);
 
       Container.BindInstance(new Harmony(_metadata.Id)).AsSingle();
       Container.BindInterfacesAndSelfTo<PresenceDetector>().AsSingle();

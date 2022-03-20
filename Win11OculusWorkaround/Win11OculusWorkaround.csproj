@@ -1,15 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <OutputType>Library</OutputType>
     <LangVersion>9</LangVersion>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <RootNamespace>OculusWin11Fix.Test</RootNamespace>
+    <RootNamespace>Win11OculusWorkaround</RootNamespace>
     <LocalRefsDir Condition="Exists('..\Refs')">..\Refs</LocalRefsDir>
     <BeatSaberDir>$(LocalRefsDir)</BeatSaberDir>
     <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
     <Nullable>enable</Nullable>
-    <Product>OculusWin11Fix.Test</Product>
+    <Product>Win11OculusWorkaround</Product>
     <Company />
     <Authors>nanikit</Authors>
     <Copyright>nanikit (c) 2022</Copyright>
@@ -18,23 +18,20 @@
     <Description></Description>
     <Platforms>x64</Platforms>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DisableZipRelease>True</DisableZipRelease>
-    <Configurations>Exe;Lib</Configurations>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GenerateManifest>true</GenerateManifest>
+    <Configurations>Debug;Release;TestOutGame</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+  <PropertyGroup Condition="'$(Configuration)' != 'Release'">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
     <OutputPath>bin\Debug</OutputPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='Lib'">
-    <DisableCopyToGame>False</DisableCopyToGame>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)'=='Exe'">
-    <OutputType>Exe</OutputType>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>none</DebugType>
+    <OutputPath>bin\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(DefineConstants.Contains('CIBuild')) OR '$(NCrunch)' == '1'">
@@ -45,6 +42,12 @@
     <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Services\Views\settings.bsml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Views\settings.bsml" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,46 +57,68 @@
     <Reference Include="0Harmony">
       <HintPath>$(BeatSaberDir)\Libs\0Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="BSML">
+      <HintPath>$(BeatSaberDir)\Plugins\BSML.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HMLib">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\HMLib.dll</HintPath>
+    </Reference>
     <Reference Include="IPA.Loader">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\IPA.Loader.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>$(BeatSaberDir)\Libs\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SiraUtil">
+      <HintPath>$(BeatSaberDir)\Plugins\SiraUtil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SteamVR">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\SteamVR.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Zenject">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Zenject.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Zenject-usage">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Zenject-usage.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup Condition="'$(OutputType)' == 'Library'">
+  <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
       <Version>2.0.0-beta4</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OculusWin11Fix\OculusWin11Fix.csproj" />
+    <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
+    <PackageReference Include="PInvoke.User32" Version="0.7.104" />
+    <PackageReference Include="SimpleExec" Version="8.0.0" />
   </ItemGroup>
 
   <PropertyGroup>
     <ImportBSMTTargets>True</ImportBSMTTargets>
     <BSMTProjectType>BSIPA</BSMTProjectType>
     <GenerateManifest>true</GenerateManifest>
-    <PluginId>OculusWin11Fix.Test</PluginId>
-    <PluginName>OculusWin11Fix.Test</PluginName>
+    <PluginId>Win11OculusWorkaround</PluginId>
+    <PluginName>Win11OculusWorkaround</PluginName>
     <Authors>nanikit</Authors>
     <Version>0.0.1</Version>
     <GameVersion>1.19.1</GameVersion>
-    <Description>Assembly for mod test</Description>
+    <Description>Workaround oculus windows 11 issue</Description>
   </PropertyGroup>
   <ItemGroup>
     <DependsOn Include="BSIPA" Version="^4.2.0" />
-    <DependsOn Include="OculusWin11Fix" Version="^0.0.1" />
+    <DependsOn Include="SiraUtil" Version="^3.0.0" />
+    <DependsOn Include="BeatSaberMarkupLanguage" Version="^1.5.5" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
-namespace OculusWin11Fix.External {
-  using OculusWin11Fix.Core;
+namespace Win11OculusWorkaround.External {
+  using Win11OculusWorkaround.Core;
   using System;
   using System.Diagnostics;
   using Zenject;

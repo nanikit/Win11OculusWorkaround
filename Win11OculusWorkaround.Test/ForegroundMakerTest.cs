@@ -1,9 +1,9 @@
-namespace OculusWin11Fix.Test {
+namespace Win11OculusWorkaround.Test {
   using ModestTree;
   using Nanikit.Test;
-  using OculusWin11Fix.Core;
-  using OculusWin11Fix.Installers;
-  using OculusWin11Fix.Services;
+  using Win11OculusWorkaround.Core;
+  using Win11OculusWorkaround.Installers;
+  using Win11OculusWorkaround.Services;
   using Zenject;
   using IPALogger = IPA.Logging.Logger;
 

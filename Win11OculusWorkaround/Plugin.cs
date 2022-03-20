@@ -1,9 +1,9 @@
-namespace OculusWin11Fix {
+namespace Win11OculusWorkaround {
   using IPA;
   using IPA.Config.Stores;
   using IPA.Loader;
-  using OculusWin11Fix.Installers;
-  using OculusWin11Fix.Services;
+  using Win11OculusWorkaround.Installers;
+  using Win11OculusWorkaround.Services;
   using SiraUtil.Zenject;
   using IPALogger = IPA.Logging.Logger;
 

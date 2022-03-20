@@ -1,4 +1,4 @@
-namespace OculusWin11Fix.Services {
+namespace Win11OculusWorkaround.Services {
   using HarmonyLib;
   using System;
   using System.Diagnostics.CodeAnalysis;

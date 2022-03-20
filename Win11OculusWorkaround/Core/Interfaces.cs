@@ -1,4 +1,4 @@
-namespace OculusWin11Fix.Core {
+namespace Win11OculusWorkaround.Core {
   using System;
 
   public interface IForegroundMaker {

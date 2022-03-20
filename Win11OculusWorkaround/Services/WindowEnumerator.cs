@@ -1,4 +1,4 @@
-namespace OculusWin11Fix.Services {
+namespace Win11OculusWorkaround.Services {
   using PInvoke;
   using System;
   using System.Collections.Generic;

@@ -1,8 +1,8 @@
-namespace OculusWin11Fix.External {
+namespace Win11OculusWorkaround.External {
   using IPA.Utilities;
   using Newtonsoft.Json;
-  using OculusWin11Fix.Core;
-  using OculusWin11Fix.Services;
+  using Win11OculusWorkaround.Core;
+  using Win11OculusWorkaround.Services;
   using System;
   using System.Collections.Generic;
   using System.ComponentModel;
@@ -11,7 +11,7 @@ namespace OculusWin11Fix.External {
   using System.Linq;
   using System.Runtime.Serialization;
   using System.Threading.Tasks;
-  using static OculusWin11Fix.External.SoundVolumeViewRow;
+  using static Win11OculusWorkaround.External.SoundVolumeViewRow;
   using static SimpleExec.Command;
   using IPALogger = IPA.Logging.Logger;
 

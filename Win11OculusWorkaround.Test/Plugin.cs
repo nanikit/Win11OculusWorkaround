@@ -1,4 +1,4 @@
-namespace OculusWin11Fix.Test {
+namespace Win11OculusWorkaround.Test {
   using IPA;
   using Nanikit.Test;
   using System.Collections.Generic;

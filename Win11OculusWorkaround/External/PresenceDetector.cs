@@ -1,7 +1,7 @@
-namespace OculusWin11Fix.External {
+namespace Win11OculusWorkaround.External {
   using HarmonyLib;
-  using OculusWin11Fix.Core;
-  using OculusWin11Fix.Services;
+  using Win11OculusWorkaround.Core;
+  using Win11OculusWorkaround.Services;
   using System;
   using Valve.VR;
   using Zenject;

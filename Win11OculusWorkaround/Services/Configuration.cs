@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo(GeneratedStore.AssemblyVisibilityTarget)]
 
-namespace OculusWin11Fix.Services {
+namespace Win11OculusWorkaround.Services {
 
   public class Configuration {
     public virtual bool EnableSoundWorkaround { get; set; } = false;
