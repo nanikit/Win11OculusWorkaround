@@ -55,20 +55,24 @@ namespace OculusWin11Fix.Services {
     private readonly WindowEnumerator _enumerator = new();
 
     private (List<RemarkableWindow>, List<IntPtr>) PartitionAccessible((List<RemarkableWindow>, List<IntPtr>) accumulated, IntPtr windowHandle) {
+      string? title = null;
       try {
         if (IsWindowVisible(windowHandle)) {
-          string title = GetWindowText(windowHandle);
+          title = GetWindowText(windowHandle);
           GetWindowThreadProcessId(windowHandle, out int processId);
           var process = Process.GetProcessById(processId);
           accumulated.Item1.Add(new(windowHandle, title, process));
         }
       }
-      // GetWindowText fail
-      catch (Win32Exception exception) when (exception.ErrorCode == (HResult)0x80004005) {
+      catch (Win32Exception getWindowTextException) when (getWindowTextException.ErrorCode == (HResult)0x80004005) {
+        accumulated.Item2.Add(windowHandle);
+      }
+      // admin procexp
+      catch (ArgumentException getProcessException) when (getProcessException.HResult == (HResult)0x80070057) {
         accumulated.Item2.Add(windowHandle);
       }
       catch (Exception exception) {
-        _logger.Error(exception);
+        _logger.Error($"window title: {title}, {exception}");
       }
       return accumulated;
     }
