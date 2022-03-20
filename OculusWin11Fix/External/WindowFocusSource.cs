@@ -1,6 +1,7 @@
 namespace OculusWin11Fix.External {
   using OculusWin11Fix.Core;
   using System;
+  using System.Diagnostics;
   using Zenject;
   using static PInvoke.User32;
   using IPALogger = IPA.Logging.Logger;
@@ -17,7 +18,8 @@ namespace OculusWin11Fix.External {
       // Listen for name change changes across all processes/threads on current desktop...
       _hookHandle = SetWinEventHook(
         WindowsEventHookType.EVENT_SYSTEM_FOREGROUND, WindowsEventHookType.EVENT_SYSTEM_FOREGROUND,
-        IntPtr.Zero, _procDelegate, 0, 0, WindowsEventHookFlags.WINEVENT_INCONTEXT);
+        IntPtr.Zero, _procDelegate, Process.GetCurrentProcess().Id, 0,
+        WindowsEventHookFlags.WINEVENT_OUTOFCONTEXT | WindowsEventHookFlags.WINEVENT_SKIPOWNPROCESS);
     }
 
     public void Dispose() {
