@@ -9,10 +9,10 @@ namespace Win11OculusWorkaround.Installers {
   using IPALogger = IPA.Logging.Logger;
 
   public class AppInstaller : Installer {
-    public AppInstaller(IPALogger logger, PluginMetadata metadata, Configuration configuration) {
-      _logger = new CustomLogger(logger);
-      _metadata = metadata;
-      _configuration = configuration;
+    public AppInstaller() {
+      _logger = new CustomLogger(Plugin._logger!);
+      _metadata = Plugin._metadata!;
+      _configuration = Plugin._configuration!;
     }
 
     public override void InstallBindings() {

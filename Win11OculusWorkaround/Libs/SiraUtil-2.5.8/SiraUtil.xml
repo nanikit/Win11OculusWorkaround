@@ -1,0 +1,1699 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SiraUtil</name>
+    </assembly>
+    <members>
+        <member name="T:SiraUtil.Accessors">
+            <summary>
+            A collection of accesors used in SiraUtil.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.Accessors.GetDiContainer">
+            <summary>
+            Gets a container from a MonoInstaller
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Attributes.SlogAttribute">
+            <summary>
+            Allows SiraUtil to detect if plugins are built for release. : D
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Attributes.SlogAttribute.#ctor">
+            <summary>
+            An empty constructor.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Converters.FileInfoConverter">
+            <summary>
+            A config converter for BSIPA which can serialize and deserialize IO <see cref="T:System.IO.FileInfo"/> values.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Converters.FileInfoConverter.FromValue(IPA.Config.Data.Value,System.Object)">
+            <summary>
+            Converts a config value to a <see cref="T:System.IO.FileInfo"/> instance.
+            </summary>
+            <param name="value"></param>
+            <param name="parent"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Converters.FileInfoConverter.ToValue(System.IO.FileInfo,System.Object)">
+            <summary>
+            Converts a <see cref="T:System.IO.FileInfo"/> instance into a string.
+            </summary>
+            <param name="obj"></param>
+            <param name="parent"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SiraUtil.Converters.Vector2Converter">
+            <summary>
+            A config converter for BSIPA which can serialize and deserialize <see cref="T:UnityEngine.Vector2"/> values.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Converters.Vector2Converter.FromValue(IPA.Config.Data.Value,System.Object)">
+            <summary>
+            Converts a config value map into a <see cref="T:UnityEngine.Vector2"/>.
+            </summary>
+            <param name="value">The config value.</param>
+            <param name="parent">The parent.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Converters.Vector2Converter.ToValue(UnityEngine.Vector2,System.Object)">
+            <summary>
+            Converts a <see cref="T:UnityEngine.Vector2"/> into a config value map.
+            </summary>
+            <param name="obj">The vector to convert.</param>
+            <param name="parent">The parent.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SiraUtil.Converters.Vector3Converter">
+            <summary>
+            A config converter for BSIPA which can serialize and deserialize <see cref="T:UnityEngine.Vector3"/> values.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Converters.Vector3Converter.FromValue(IPA.Config.Data.Value,System.Object)">
+            <summary>
+            Converts a config value map into a <see cref="T:UnityEngine.Vector3"/>.
+            </summary>
+            <param name="value">The config value.</param>
+            <param name="parent">The parent.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Converters.Vector3Converter.ToValue(UnityEngine.Vector3,System.Object)">
+            <summary>
+            Converts a <see cref="T:UnityEngine.Vector3"/> into a config value map.
+            </summary>
+            <param name="obj">The vector to convert.</param>
+            <param name="parent">The parent.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SiraUtil.Converters.HiveVersionConverter">
+            <summary>
+            A config converter for BSIPA which can serialize and deserialize Hive.Versioning <see cref="T:Hive.Versioning.Version"/> values.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Converters.HiveVersionConverter.FromValue(IPA.Config.Data.Value,System.Object)">
+            <summary>
+            Converts a config value text to a SemVer <see cref="T:Hive.Versioning.Version"/>.
+            </summary>
+            <param name="value"></param>
+            <param name="parent"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Converters.HiveVersionConverter.ToValue(Hive.Versioning.Version,System.Object)">
+            <summary>
+            Converts a SemVer <see cref="T:Hive.Versioning.Version"/> into a config value text.
+            </summary>
+            <param name="obj"></param>
+            <param name="parent"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SiraUtil.Converters.VersionConverter">
+            <summary>
+            A config converter for BSIPA which can serialize and deserialize SemVer <see cref="T:SemVer.Version"/> values.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Converters.VersionConverter.FromValue(IPA.Config.Data.Value,System.Object)">
+            <summary>
+            Converts a config value text to a SemVer <see cref="T:SemVer.Version"/>.
+            </summary>
+            <param name="value"></param>
+            <param name="parent"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Converters.VersionConverter.ToValue(SemVer.Version,System.Object)">
+            <summary>
+            Converts a SemVer <see cref="T:SemVer.Version"/> into a config value text.
+            </summary>
+            <param name="obj"></param>
+            <param name="parent"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SiraUtil.Events.SiraEvents">
+            <summary>
+            A collection of events used by SIRA
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Extensions">
+            <summary>
+            A set of useful extension methods.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Extensions.BindLoggerAsSiraLogger(Zenject.DiContainer,IPA.Logging.Logger,System.Boolean)">
+            <summary>
+            Registers a logger as a SiraLogger, which can be then requested by Dependency Injection
+            </summary>
+            <param name="container">The container to install the logger into.</param>
+            <param name="logger">The main logger to be used.</param>
+            <param name="elevatedDebugMode">If this is true, any calls to .Debug will be redirected to .Info instead.</param>
+        </member>
+        <member name="M:SiraUtil.Extensions.Upgrade``2(``0)">
+            <summary>
+            Upgrade a component to a type that inherits it.
+            </summary>
+            <typeparam name="T">The type of the component.</typeparam>
+            <typeparam name="U">The type of the upgraded component.</typeparam>
+            <param name="monoBehaviour">The original component.</param>
+            <remarks>By putting an object into here you are permanently destroying it. Any and all references to this object need to be repaired.</remarks>
+            <returns>The upgraded component.</returns>
+        </member>
+        <member name="M:SiraUtil.Extensions.Upgrade(UnityEngine.Component,System.Type)">
+            <summary>
+            Upgrade a component to a type that inherits it.
+            </summary>
+            <param name="monoBehaviour">The original component.</param>
+            <param name="upgradingType">The type to upgrade it to.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Extensions.CopyTo(UnityEngine.Behaviour,UnityEngine.Behaviour)">
+            <summary>
+            Copies the value of a component to another component
+            </summary>
+            <param name="source">The original component.</param>
+            <param name="destination">The component to copy to.</param>
+        </member>
+        <member name="M:SiraUtil.Extensions.Clone``1(UnityEngine.GameObject,``0)">
+            <summary>
+            Clones a component onto a gameobject.
+            </summary>
+            <typeparam name="T">The type of the component to clone.</typeparam>
+            <param name="go">The gameobject to clone to.</param>
+            <param name="toAdd">The component to clone.</param>
+            <returns>The cloned component.</returns>
+        </member>
+        <member name="M:SiraUtil.Extensions.LocalizationGetOr(System.String,System.String)">
+            <summary>
+            Gets the localized key of a string from Polyglot, if not found then returns specified alternative.
+            </summary>
+            <param name="key">The key of the string in Polyglot.</param>
+            <param name="or">The string to be used if the key could not be found.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Extensions.FromNewComponentOnNewGameObject(Zenject.FromBinder,System.String)">
+            <summary>
+            Creates a new component on a new GameObject
+            </summary>
+            <param name="binder">The preceding binder.</param>
+            <param name="name">The name of the GameObject.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Extensions.FromNewComponentOnNewGameObject(Zenject.FactoryFromBinderBase,System.String)">
+            <summary>
+            Creates a new component on a new GameObject
+            </summary>
+            <param name="binder">The preceding binder base.</param>
+            <param name="name">The name of the GameObject.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Extensions.FromNewComponentAsViewController(Zenject.FromBinder,System.Action{Zenject.InjectContext,System.Object})">
+            <summary>
+            Binds a view controller to the container.
+            </summary>
+            <param name="binder">The binder.</param>
+            <param name="onInstantiated">The callback when the view controller is instantiated.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Extensions.BindViewController``1(Zenject.DiContainer,System.Boolean)">
+            <summary>
+            Binds a <see cref="T:HMUI.ViewController"/> into the Container. This creates the view controller, repairs its dependencies, and adds it to the container.
+            </summary>
+            <typeparam name="T">The type of the ViewController.</typeparam>
+            <param name="Container">The Container to install this ViewController into.</param>
+            <param name="active">Whether or not to enable it after its binded.</param>
+        </member>
+        <member name="M:SiraUtil.Extensions.BindFlowCoordinator``1(Zenject.DiContainer)">
+            <summary>
+            Binds a <see cref="T:HMUI.FlowCoordinator"/> into the Container. This creates the flow coordinator, repairs its dependencies, and adds it to the container.
+            </summary>
+            <typeparam name="T">The type of the FlowCoordinator.</typeparam>
+            <param name="Container">The Container to install this FlowCoordinator into.</param>
+        </member>
+        <member name="M:SiraUtil.Extensions.GetColor(Saber)">
+            <summary>
+            Gets the color of a saber.
+            </summary>
+            <param name="saber">The saber to get the color of.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Extensions.ChangeColorInstant(Saber,UnityEngine.Color)">
+            <summary>
+            Changes the color of a saber instantly.
+            </summary>
+            <param name="saber">The saber to change the color of.</param>
+            <param name="color">The color to change the saber to.</param>
+        </member>
+        <member name="M:SiraUtil.Extensions.ChangeColor(Saber,UnityEngine.Color)">
+            <summary>
+            Changes the color of a saber.
+            </summary>
+            <param name="saber">The saber to change the color of.</param>
+            <param name="color">The color to change the saber to.</param>
+        </member>
+        <member name="M:SiraUtil.Extensions.ChangeColor(Saber,UnityEngine.Color,SaberModelController,UnityEngine.Color,SetSaberGlowColor[],SetSaberFakeGlowColor[],TubeBloomPrePassLight)">
+            <summary>
+            Change the color of a saber.
+            </summary>
+            <param name="_">The saber.</param>
+            <param name="color">The color to change the saber to.</param>
+            <param name="smc">The model controller of the saber.</param>
+            <param name="tintColor">The tint color of the new color.</param>
+            <param name="setSaberGlowColors">The glow color groups of the saber.</param>
+            <param name="setSaberFakeGlowColors">The fake glow color groups of the saber.</param>
+            <param name="light">The light of the saber.</param>
+        </member>
+        <member name="M:SiraUtil.Extensions.SetType(Saber,SaberType,ColorManager)">
+            <summary>
+            Sets the type of a saber. This will change its color and the type of note it can hit.
+            </summary>
+            <param name="saber">The saber to change the type of.</param>
+            <param name="type">The type to change the saber to.</param>
+            <param name="colorManager">The color manager used to change the color of the saber.</param>
+        </member>
+        <member name="M:SiraUtil.Extensions.ChangeType(Saber,SaberType)">
+            <summary>
+            Changes the type of the saber. This does NOT change the color of the saber.
+            </summary>
+            <param name="saber">The saber to change the type of.</param>
+            <param name="type">The type to change the saber to.</param>
+        </member>
+        <member name="M:SiraUtil.Extensions.ChangeType(SaberTypeObject,SaberType)">
+            <summary>
+            Changes the type of a saber type object.
+            </summary>
+            <param name="sto">The SaberTypeObject.</param>
+            <param name="type">The Saber Type</param>
+        </member>
+        <member name="M:SiraUtil.Extensions.NullCheck(IPA.Logging.Logger,System.Object)">
+            <summary>
+            Will log the nullity of an object.
+            </summary>
+            <param name="logger">The logger to log to.</param>
+            <param name="toCheck">The object to check nullability.</param>
+        </member>
+        <member name="M:SiraUtil.Extensions.GetEventHandlers``2(``0,System.String)">
+            <summary>
+            Gets the event of an object.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Interfaces.ICallback`1">
+            <summary>
+            Interface for having a callback with a parent who manages type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">The type (of self) that the parent manages.</typeparam>
+        </member>
+        <member name="E:SiraUtil.Interfaces.ICallback`1.Callback">
+            <summary>
+            The callback for the parent to subscribe to.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Interfaces.IDismissable">
+            <summary>
+            Interface for dismissing objects.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Interfaces.IDismissable.Dismiss">
+            <summary>
+            Dismisses an object.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Interfaces.ILevelFinisher">
+            <summary>
+            A collection of events for when a level finishes. Avoid using this in the game scene.
+            </summary>
+        </member>
+        <member name="E:SiraUtil.Interfaces.ILevelFinisher.StandardLevelDidFinish">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:SiraUtil.Interfaces.ILevelFinisher.MissionLevelDidFinish">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:SiraUtil.Interfaces.ILevelFinisher.MultiplayerLevelDidFinish">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:SiraUtil.Interfaces.ILevelFinisher.LocalPlayerDidDisconnectFromMultiplayer">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:SiraUtil.Interfaces.ILevelFinisher.MultiplayerLevelDisconnected">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:SiraUtil.Interfaces.ILevelFinisher.StandardLevelFinished">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:SiraUtil.Interfaces.ILevelFinisher.MissionLevelFinished">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:SiraUtil.Interfaces.ILevelFinisher.MultiplayerLevelFinished">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Interfaces.ILocalizer">
+            <summary>
+            An interface to provide a link between a mod and the SiraLocalizer mod (custom localizations in game).
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Interfaces.ILocalizer.AddLocalizationSheet(System.String,Polyglot.GoogleDriveDownloadFormat,System.String,System.Boolean)">
+            <summary>
+            Creates a localization asset.
+            </summary>
+            <param name="localizationAsset">The text to generate it from.</param>
+            <param name="type">The format of the localization data.</param>
+            <param name="id">The ID of the localization data.</param>
+            <param name="shadow">Only show a language set if another localization asset is using it.</param>
+            <returns>The LocalizationAsset of the sheet.</returns>
+        </member>
+        <member name="M:SiraUtil.Interfaces.ILocalizer.AddLocalizationSheetFromAssembly(System.String,Polyglot.GoogleDriveDownloadFormat,System.Boolean)">
+            <summary>
+            Adds a localization sheet from an assembly path.
+            </summary>
+            <param name="assemblyPath">The assembly path to the localization asset file.</param>
+            <param name="type">The format of the localization data.</param>
+            <param name="shadow">Only show a language set if another localization asset is using it.</param>
+            <returns>The LocalizationAsset of the sheet.</returns>
+        </member>
+        <member name="M:SiraUtil.Interfaces.ILocalizer.AddLocalizationSheet(Polyglot.LocalizationAsset,System.Boolean)">
+            <summary>
+            Adds a localization asset to Polyglot.
+            </summary>
+            <param name="localizationAsset"></param>
+            <param name="shadow">Only show a language set if another localization asset is using it.</param>
+        </member>
+        <member name="M:SiraUtil.Interfaces.ILocalizer.RemoveLocalizationSheet(Polyglot.LocalizationAsset)">
+            <summary>
+            Removes a localization asset from Polyglot.
+            </summary>
+            <param name="localizationAsset"></param>
+        </member>
+        <member name="M:SiraUtil.Interfaces.ILocalizer.RemoveLocalizationSheet(System.String)">
+            <summary>
+            Removes a localization asset from Polyglot.
+            </summary>
+            <param name="key">The name or source of the asset.</param>
+        </member>
+        <member name="M:SiraUtil.Interfaces.ILocalizer.RecalculateLanguages">
+            <summary>
+            Recalculate the supported languages table.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Interfaces.IModelProvider">
+            <summary>
+            An interface for mods to provide custom models to other objects.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Interfaces.IModelProvider.Type">
+            <summary>
+            The type of the container that will be instantiated to replace the model.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Interfaces.IModelProvider.Priority">
+            <summary>
+            The priority of the provider. The higher this is the more important it is. Set this to -1 to have this provider not recognized at all.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Interfaces.IPrefabProvider`1">
+            <summary>
+            An interface used to modify in game prefabs. The prefab type must be supported in order for it to have any actual effect.
+            </summary>
+            <typeparam name="T">The type of the original prefab.</typeparam>
+        </member>
+        <member name="M:SiraUtil.Interfaces.IPrefabProvider`1.Modify(`0)">
+            <summary>
+            Modify the prefab here. Return the prefab, or your own if you want to fullly replace it.
+            </summary>
+            <param name="original">The original prefab.</param>
+            <returns>The modified prefab.</returns>
+        </member>
+        <member name="P:SiraUtil.Interfaces.IPrefabProvider`1.Chain">
+            <summary>
+            Chaining a provider will allow multiple providers to affect a single prefab. They will go in order by priority dictated by the <seealso cref="T:SiraUtil.Interfaces.IModelProvider"/>, and any non-chain providers will be skipped. If the highest priority provider is non-chainable then nothing will be chained to it.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Interfaces.IRegistrar`1">
+            <summary>
+            A generic interface which defines a registration.
+            </summary>
+            <typeparam name="T">The type to register.</typeparam>
+        </member>
+        <member name="M:SiraUtil.Interfaces.IRegistrar`1.Add(`0)">
+            <summary>
+            Adds a registration to this registrar.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:SiraUtil.Interfaces.IRegistrar`1.Remove(`0)">
+            <summary>
+            Removes a registration from this registrar.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="T:SiraUtil.Interfaces.IToggleable">
+            <summary>
+            Controls the state for something to be toggled.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Interfaces.IToggleable.Status">
+            <summary>
+            The toggleability.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Interfaces.IColorable">
+            <summary>
+            An interface which marks something as colorable and allows its color to be changed easily. Mainly used to increase intermod compatibility.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Interfaces.IColorable.Color">
+            <summary>
+            The current color value of an object.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Interfaces.IColorable.SetColor(UnityEngine.Color)">
+            <summary>
+            Sets the color of an object.
+            </summary>
+            <param name="color">The color to set to.</param>
+        </member>
+        <member name="T:SiraUtil.Interfaces.ISaberRegistrar">
+            <summary>
+            An interface for a manager to handle a dynamic number of sabers.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Interfaces.ISaberRegistrar.Initialize(SaberManager)">
+            <summary>
+            Initialize the sabers.
+            </summary>
+            <param name="saberManager">The saber manager used to get the original saber references.</param>
+        </member>
+        <member name="M:SiraUtil.Interfaces.ISaberRegistrar.ChangeColor(Saber)">
+            <summary>
+            Change the color of a registered saber.
+            </summary>
+            <param name="saber">The saber to change the color of.</param>
+        </member>
+        <member name="M:SiraUtil.Interfaces.ISaberRegistrar.RegisterSaber(Saber)">
+            <summary>
+            Registers a saber into the registrar.
+            </summary>
+            <param name="saber">The saber to register.</param>
+        </member>
+        <member name="M:SiraUtil.Interfaces.ISaberRegistrar.UnregisterSaber(Saber)">
+            <summary>
+            Unregisters a saber in the registrar.
+            </summary>
+            <param name="saber">The saber to unregister.</param>
+        </member>
+        <member name="T:SiraUtil.Objects.ObjectState">
+            <summary>
+            A snapshot of an object.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.Objects.ObjectState.Active">
+            <summary>
+            The activity of the object at a point in time.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.Objects.ObjectState.pose">
+            <summary>
+            The position and rotation of the object at a point in time.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.Objects.ObjectState.scale">
+            <summary>
+            The scale of the object at a point in time.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.Objects.ObjectState.transform">
+            <summary>
+            The tranform of the object.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.Objects.ObjectState.parent">
+            <summary>
+            The parent of the object at a point in time;
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Objects.ObjectState.#ctor(UnityEngine.Transform)">
+            <summary>
+            Initializes a new object state.
+            </summary>
+            <param name="transform">The transform of the object</param>
+        </member>
+        <member name="M:SiraUtil.Objects.ObjectState.Revert">
+            <summary>
+            If the object still exists, revert its position back to what it was before.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Objects.ObjectStateContainer">
+            <summary>
+            A container for object states.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.Objects.ObjectStateContainer.objects">
+            <summary>
+            The objects in this container.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Objects.ObjectStateContainer.#ctor(UnityEngine.GameObject)">
+            <summary>
+            Initializes a new object state container.
+            </summary>
+            <param name="mainParent">The object to snapshot.</param>
+        </member>
+        <member name="M:SiraUtil.Objects.ObjectStateContainer.Revert">
+            <summary>
+            Reverts all the objects into the container to their original position.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Objects.SiraPrefabContainer">
+            <summary>
+            A container to wrap a prefab into.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Objects.SiraPrefabContainer.Prefab">
+            <summary>
+            The prefab in this container.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Objects.SiraPrefabContainer.Start">
+            <summary>
+            The start method.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Objects.SiraPrefabContainer.Pool">
+            <summary>
+            The Zenject pool used to create more prefabs.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Sabers.SiraObstacleSaberSparkleEffectManager">
+            <summary>
+            An upgraded obstacle manager which supports more than two sabers.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraObstacleSaberSparkleEffectManager.ChangeColor(Saber)">
+            <summary>
+            Force a registered saber to change its color.
+            </summary>
+            <param name="_"></param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraObstacleSaberSparkleEffectManager.Initialize(SaberManager)">
+            <summary>
+            The initialization method.
+            </summary>
+            <param name="saberManager">The saber manager used to gather saber references.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraObstacleSaberSparkleEffectManager.Start">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraObstacleSaberSparkleEffectManager.Update">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraObstacleSaberSparkleEffectManager.BurnMarkPosForSaberType(SaberType)">
+            <summary>
+            Gets a burn mark position for a specific saber type.
+            </summary>
+            <param name="saberType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraObstacleSaberSparkleEffectManager.RegisterSaber(Saber)">
+            <summary>
+            Registers a saber into the Sira obstacle effect manager.
+            </summary>
+            <param name="saber"></param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraObstacleSaberSparkleEffectManager.UnregisterSaber(Saber)">
+            <summary>
+            Unregisters a saber in the Sira obstacle effect manager.
+            </summary>
+            <param name="saber"></param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraObstacleSaberSparkleEffectManager.Recalculate">
+            <summary>
+            Recalculates saber objects.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Sabers.SiraSaberBurnMarkArea">
+            <summary>
+            An upgraded version of the SaberBurnMarkArea class which has support for more than two sabers.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkArea.Start">
+            <summary>
+            The start method .
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkArea.Initialize(SaberManager)">
+            <summary>
+            The initialization method.
+            </summary>
+            <param name="saberManager">The saber manager used to gather saber references.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkArea.LateUpdate">
+            <summary>
+            The late update method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkArea.OnDestroy">
+            <summary>
+            The destroy method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkArea.OnEnable">
+            <summary>
+            The OnEnable method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkArea.OnDisable">
+            <summary>
+            The disable method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkArea.RegisterSaber(Saber)">
+            <summary>
+            Registers a saber into the Sira saber burn mark area manager.
+            </summary>
+            <param name="saber">The saber to register.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkArea.UnregisterSaber(Saber)">
+            <summary>
+            Unregisters a saber in the Sira saber burn mark area manager.
+            </summary>
+            <param name="saber">The saber to unregister.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkArea.ChangeColor(Saber)">
+            <summary>
+            Forces a registered saber to change its color.
+            </summary>
+            <param name="saber">The saber being forced to change its color.</param>
+        </member>
+        <member name="T:SiraUtil.Sabers.SiraSaberBurnMarkSparkles">
+            <summary>
+            An upgraded version of the SaberBurnMarkSparkles class which has support for more than two sabers.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkSparkles.Start">
+            <summary>
+            The start method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkSparkles.Initialize(SaberManager)">
+            <summary>
+            The initialization method.
+            </summary>
+            <param name="saberManager">The saber manager used to gather saber references.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkSparkles.LateUpdate">
+            <summary>
+            The late update method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkSparkles.OnDestroy">
+            <summary>
+            The destroy method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkSparkles.RegisterSaber(Saber)">
+            <summary>
+            Registers a saber into the Sira saber burn mark area manager.
+            </summary>
+            <param name="saber">The saber to register.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkSparkles.UnregisterSaber(Saber)">
+            <summary>
+            Unregisters a saber in the Sira saber burn mark area manager.
+            </summary>
+            <param name="saber">The saber to unregister.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberBurnMarkSparkles.ChangeColor(Saber)">
+            <summary>
+            Forces a registered saber to change its color.
+            </summary>
+            <param name="saber">The saber being forced to change its color.</param>
+        </member>
+        <member name="T:SiraUtil.Sabers.SiraSaberClashChecker">
+            <summary>
+            An upgraded version of the SaberClashChecker which has support for more than two sabers.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Sabers.SiraSaberClashChecker.MultiSaberMode">
+            <summary>
+            Whether or not more than two sabers are being activated.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.Sabers.SiraSaberClashChecker._container">
+            <summary>
+            The Zenject container used to gather lazy references.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberClashChecker.Initialize(SaberManager)">
+            <summary>
+            The initialization method.
+            </summary>
+            <param name="saberManager">The saber manager used to gather saber references.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberClashChecker.AreSabersClashing(UnityEngine.Vector3@)">
+            <summary>
+            Checks if any of the registered sabers are clashing.
+            </summary>
+            <param name="clashingPoint">The point that the sabers are clashing at.</param>
+            <returns>Are any sabers clashing?</returns>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberClashChecker.ChangeColor(Saber)">
+            <summary>
+            Changes the color of a registered saber.
+            </summary>
+            <param name="_"></param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberClashChecker.RegisterSaber(Saber)">
+            <summary>
+            Registers a saber into the clash checker.
+            </summary>
+            <param name="saber">The saber to register.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaberClashChecker.UnregisterSaber(Saber)">
+            <summary>
+            Unregisters a saber in the clash checker.
+            </summary>
+            <param name="saber">The saber to unregister.</param>
+        </member>
+        <member name="T:SiraUtil.Sabers.SiraSaber">
+            <summary>
+            A SiraSaber is an extra saber with some useful extension methods. The SiraSaber object is on the same GameObject as the normal Saber object, it's not an overridden version of the default Saber class.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.Sabers.SiraSaber.nextType">
+            <summary>
+            The next saber type to generate. Zenject factories don't easily support multiple parameters so set this to dictate what the next saber type will be (it can be changed, but model providers that use the saber type to dictate the model won't appear properly).
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Sabers.SiraSaber.Saber">
+            <summary>
+            The active saber being controlled by this SiraSaber.
+            </summary>
+        </member>
+        <member name="E:SiraUtil.Sabers.SiraSaber.ModelDidInit">
+            <summary>
+            Called when the model of the saber is setup.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaber.Update">
+            <summary>
+            The update method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaber.OnDestroy">
+            <summary>
+            The destroy method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaber.SetType(SaberType)">
+            <summary>
+            Changes the type and color of the saber.
+            </summary>
+            <param name="type">The type of the new saber type.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaber.ChangeType(SaberType)">
+            <summary>
+            Changes the type of the SiraSaber.
+            </summary>
+            <param name="type">The type of the new saber type.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaber.SwapType(System.Boolean)">
+            <summary>
+            Swaps the type of the saber.
+            </summary>
+            <param name="resetColor">Whether or not to change the color as well.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaber.ChangeColor(UnityEngine.Color)">
+            <summary>
+            Changes the color of the saber.
+            </summary>
+            <param name="color">The color you want the saber to be.</param>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaber.SetSaber(Saber)">
+            <summary>
+            Set the Saber that lies in this SiraSaber. Really should only be used when the saber registered in this SiraSaber is destroyed or overridden.
+            </summary>
+            <param name="saber">The new saber.</param>
+        </member>
+        <member name="T:SiraUtil.Sabers.SiraSaber.Factory">
+            <summary>
+            The placeholder factory used in Zenject. Request this in the container to receive the factory.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Sabers.SiraSaber.SaberFactory">
+            <summary>
+            A factory for dynamically generating new sabers.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Sabers.SiraSaber.SaberFactory.Create">
+            <summary>
+            Creates a new SiraSaber. Any sabers created this way are automatically inserted into the effect manager.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:SiraUtil.Services.FinishEventDispatcher">
+            <summary>
+            A collection of events for when a level finishes. Avoid using this in the game scene.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Services.SaberProvider">
+            <summary>
+            A model provider for the saber. Use this to get an instance of the saber model.
+            </summary>
+        </member>
+        <member name="E:SiraUtil.Services.SaberProvider.ControllerReady">
+            <summary>
+            Invoked when the model provider is setup.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Services.SaberProvider.IsSafe(System.Boolean)">
+            <summary>
+            Is the model available?
+            </summary>
+            <param name="callback">If the model is available, this will invoke the event <see cref="E:SiraUtil.Services.SaberProvider.ControllerReady"/> for any listeners to know when it's safe to get a model.</param>
+            <returns>Whether or not the model is available.</returns>
+        </member>
+        <member name="M:SiraUtil.Services.SaberProvider.GetModel">
+            <summary>
+            Get an instance of the current saber model. This CAN be null! Only use this when you know the model is present. Should use <see cref="M:SiraUtil.Services.SaberProvider.GetModel(System.Action{SaberModelController})"/> or <see cref="M:SiraUtil.Services.SaberProvider.GetModel``1(System.Action{``0})"/> to hook into the callback so you know when the saber model is ready.
+            </summary>
+            <returns>The current saber model.</returns>
+        </member>
+        <member name="M:SiraUtil.Services.SaberProvider.GetModel(System.Action{SaberModelController})">
+            <summary>
+            Get the current saber model.
+            </summary>
+            <param name="callback">The callback sent when the model is ready.</param>
+        </member>
+        <member name="M:SiraUtil.Services.SaberProvider.GetModel``1(System.Action{``0})">
+            <summary>
+            Get the current saber model.
+            </summary>
+            <typeparam name="T">The type of the <seealso cref="T:SaberModelController"/>of the model.</typeparam>
+            <param name="callback">The callback sent when the model is ready.</param>
+        </member>
+        <member name="M:SiraUtil.Services.SaberProvider.Dispose">
+            <summary>
+            THe dispose method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Services.SaberProvider.Tick">
+            <summary>
+            The tick method.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Services.SiraSaberEffectManager">
+            <summary>
+            Handles the processing and change of saber effects.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Services.SiraSaberEffectManager.RepatchDefault(Saber,Saber,SaberManager)">
+            <summary>
+            Replaces the references of each saber to a new set of sabers for all effect systems.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <param name="saberManager"></param>
+        </member>
+        <member name="M:SiraUtil.Services.SiraSaberEffectManager.Initialize">
+            <summary>
+            The initialization method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Services.SiraSaberEffectManager.SaberCreated(Saber)">
+            <summary>
+            Registers a saber into the effect manager.
+            </summary>
+            <param name="saber">The saber being registered.</param>
+        </member>
+        <member name="M:SiraUtil.Services.SiraSaberEffectManager.SaberDestroyed(Saber)">
+            <summary>
+            Unregisters a saber from the effect manager.
+            </summary>
+            <param name="saber">The saber being unregistered.</param>
+        </member>
+        <member name="M:SiraUtil.Services.SiraSaberEffectManager.ChangeColor(Saber)">
+            <summary>
+            Changes the color of a saber in the effect manager. This will update all effects with the correct color.
+            </summary>
+            <param name="saber">The saber that's having its color changed.</param>
+        </member>
+        <member name="M:SiraUtil.Services.SiraSaberEffectManager.Dispose">
+            <summary>
+            The dispose method.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Services.Submission">
+            <summary>
+            A service for disabling and enabling score submission.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Services.Submission.Dispose">
+            <summary>
+            The dispose method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Services.Submission.Tickets">
+            <summary>
+            Get all the currently active tickets.
+            </summary>
+            <returns>All the currently active tickets.</returns>
+        </member>
+        <member name="M:SiraUtil.Services.Submission.DisableScoreSubmission(System.String,System.String)">
+            <summary>
+            Disables score submission for the currently played level.
+            </summary>
+            <param name="source">The name of the entity that is disabling score submission.</param>
+            <param name="subsource">A secondary source that is disabling score submission. Use this to be more specific about why submission is being disabled (ex. specific modifier)</param>
+            <returns>A ticket which can be used to disable the disabling of score submission.</returns>
+        </member>
+        <member name="M:SiraUtil.Services.Submission.Remove(SiraUtil.Services.Submission.Ticket)">
+            <summary>
+            Reenables score submission for a ticket.
+            </summary>
+            <param name="ticket"></param>
+        </member>
+        <member name="M:SiraUtil.Services.Submission.Remove(System.String)">
+            <summary>
+            Reenables score submission from a source.
+            </summary>
+            <param name="source"></param>
+        </member>
+        <member name="T:SiraUtil.Services.Submission.Ticket">
+            <summary>
+            A ticket which contains details for a score submission disable.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Services.Submission.Ticket.Source">
+            <summary>
+            The source that disabled score submission.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Services.Submission.Ticket.AddReason(System.String)">
+            <summary>
+            Adds a reason to this.
+            </summary>
+            <param name="reason"></param>
+        </member>
+        <member name="M:SiraUtil.Services.Submission.Ticket.Reasons">
+            <summary>
+            All the reasons as to why this ticket disabled score submission.
+            </summary>
+            <returns>The reasons.</returns>
+        </member>
+        <member name="M:SiraUtil.Services.Submission.Ticket.Copy">
+            <summary>
+            Copies a ticket.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:SiraUtil.Localizer">
+            <summary>
+            A wrapper around the optional localizer mod called SiraLocalizer. Nothing will actually localize if the mod isn't installed. This class only exists to avoid breaking any API changes.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Localizer.AddLocalizationSheet(Polyglot.LocalizationAsset)">
+            <summary>
+            Adds a localization sheet.
+            </summary>
+            <param name="localizationAsset"></param>
+        </member>
+        <member name="M:SiraUtil.Localizer.RemoveLocalizationSheet(Polyglot.LocalizationAsset)">
+            <summary>
+            Removes a localization sheet.
+            </summary>
+            <param name="localizationAsset"></param>
+        </member>
+        <member name="M:SiraUtil.Localizer.RemoveLocalizationSheet(System.String)">
+            <summary>
+            Removes a localization sheet by its key.
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:SiraUtil.Localizer.AddLocalizationSheet(System.String,Polyglot.GoogleDriveDownloadFormat,System.String,System.Boolean)">
+            <summary>
+            Adds a localization sheet by text.
+            </summary>
+            <param name="localizationAsset">The stringy asset of the sheet.</param>
+            <param name="type">The type of the asset.</param>
+            <param name="id">The ID of the asset.</param>
+            <param name="shadow">Is it a shadow localization? This means it will not appear unless another source NOT marked as a shadow localization uses a language present. This is to avoid a mod implementing a lot of languages that aren't used anywhere else and them appearing on the list.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Localizer.AddLocalizationSheetFromAssembly(System.String,Polyglot.GoogleDriveDownloadFormat,System.Boolean)">
+            <summary>
+            Adds a localization sheet from an assembly rsource.
+            </summary>
+            <param name="assemblyPath">The path to the resource.</param>
+            <param name="type">The type of the asset.</param>
+            <param name="shadow">Is it a shadow localization? This means it will not appear unless another source NOT marked as a shadow localization uses a language present. This is to avoid a mod implementing a lot of languages that aren't used anywhere else and them appearing on the list.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SiraUtil.Tools.FPFCToggle">
+            <summary>
+            The FPFC manager.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Tools.FPFCToggle.Enabled">
+            <summary>
+            The current state of the FPFC Toggler.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Tools.FPFCToggle.Start">
+            <summary>
+            The start method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Tools.FPFCToggle.OnDestroy">
+            <summary>
+            The destroy method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Tools.FPFCToggle.Update">
+            <summary>
+            The update method.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Tools.FPFCToggle.Toggle(System.Boolean)">
+            <summary>
+            Toggles FPFC
+            </summary>
+            <param name="state">The state to toggle it to (true or false, on or off).</param>
+        </member>
+        <member name="M:SiraUtil.Tools.FPFCToggle.Refresh">
+            <summary>
+            Refreshes the FPFC Variables.
+            </summary>
+        </member>
+        <member name="T:SiraUtil.Tools.SiraLog">
+            <summary>
+            A simple multiplexed sub-logger for Dependency Injection
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Tools.SiraLog.Logger">
+            <summary>
+            The logger that's being wrapped around.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Tools.SiraLog.DebugMode">
+            <summary>
+            Debug Mode will elevate debug logs to info logs.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Tools.SiraLog.Info(System.Object)">
+            <summary>
+            Log with a <see cref="T:IPA.Logging.Logger.Level"/> of info.
+            </summary>
+            <param name="obj">The object to log.</param>
+        </member>
+        <member name="M:SiraUtil.Tools.SiraLog.Warning(System.Object)">
+            <summary>
+            Log with a <see cref="T:IPA.Logging.Logger.Level"/> of warning.
+            </summary>
+            <param name="obj">The object to log.</param>
+        </member>
+        <member name="M:SiraUtil.Tools.SiraLog.Error(System.Object)">
+            <summary>
+            Log with a <see cref="T:IPA.Logging.Logger.Level"/> of error.
+            </summary>
+            <param name="obj">The object to log.</param>
+        </member>
+        <member name="M:SiraUtil.Tools.SiraLog.Debug(System.Object)">
+            <summary>
+            Log with a <see cref="T:IPA.Logging.Logger.Level"/> of debug.
+            </summary>
+            <param name="obj">The object to log.</param>
+        </member>
+        <member name="M:SiraUtil.Tools.SiraLog.Null(System.Object)">
+            <summary>
+            Quickly perform a null check on an object and log the results.
+            </summary>
+            <param name="obj">The object to null check.</param>
+        </member>
+        <member name="T:SiraUtil.SiraClient">
+            <summary>
+            Special web client which spawns a new web client only when necessary, scoped per mod assembly.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.SiraClient.SetHeader(System.String,System.String)">
+            <summary>
+            Sets a temporary header on the web client. It's cleared when the next request is sent.
+            </summary>
+            <param name="name">The name of the header.</param>
+            <param name="value">The value of the header.</param>
+        </member>
+        <member name="M:SiraUtil.SiraClient.SetUserAgent(System.String,System.Version)">
+            <summary>
+            Sets the user agent of the web client
+            </summary>
+            <param name="app">The name of the application (or mod in this case).</param>
+            <param name="version">The version of the application.</param>
+        </member>
+        <member name="M:SiraUtil.SiraClient.SetUserAgent(System.String,SemVer.Version)">
+            <summary>
+            Sets the user agent of the web client
+            </summary>
+            <param name="app">The name of the application (or mod in this case).</param>
+            <param name="version">The version of the application.</param>
+        </member>
+        <member name="M:SiraUtil.SiraClient.SetUserAgent(System.String,Hive.Versioning.Version)">
+            <summary>
+            Sets the user agent of the web client
+            </summary>
+            <param name="app">The name of the application (or mod in this case).</param>
+            <param name="version">The version of the application.</param>
+        </member>
+        <member name="M:SiraUtil.SiraClient.PostAsync(System.String,System.Object,System.Threading.CancellationToken,System.Net.Http.Headers.AuthenticationHeaderValue)">
+            <summary>
+            Asynchronously send a POST request.
+            </summary>
+            <param name="url">The URL to send the request to.</param>
+            <param name="postData">The body data for the request.</param>
+            <param name="token">The cancellation token for the request.</param>
+            <param name="authHeader">The header for the request.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.SiraClient.GetAsync(System.String,System.Threading.CancellationToken,System.Net.Http.Headers.AuthenticationHeaderValue)">
+            <summary>
+            Asynchronously send a GET request.
+            </summary>
+            <param name="url">The URL to send the request to.</param>
+            <param name="token">The cancellation token for the request.</param>
+            <param name="authHeader">The header for the request.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.SiraClient.DownloadImage(System.String,System.Threading.CancellationToken,System.Net.Http.Headers.AuthenticationHeaderValue)">
+            <summary>
+            Downloads an image at a URL and returns its raw byte data.
+            </summary>
+            <param name="url">The URL where the image is located.</param>
+            <param name="token">The cancellation token for the request.</param>
+            <param name="authHeader">The header for the request.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.SiraClient.SendAsync(System.Net.Http.HttpMethod,System.String,System.Threading.CancellationToken,System.Object,System.Net.Http.Headers.AuthenticationHeaderValue,System.IProgress{System.Double})">
+            <summary>
+            Asynchronously send a web request.
+            </summary>
+            <param name="methodType">The HTTP request type of the request.</param>
+            <param name="url">The URL to send the request to.</param>
+            <param name="token">The cancellation token of the request.</param>
+            <param name="postData">The body of the request.</param>
+            <param name="authHeader">The header of the request.</param>
+            <param name="progress">The progress reporter of the request.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SiraUtil.Utilities">
+            <summary>
+            A collection of utilities used in SiraUtil.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.Utilities.ASSERTHIT">
+            <summary>
+            Nice Assert Hit, Ding Dong.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Utilities.PauseChamp">
+            <summary>
+            A simple Task which awaits for 100ms. Mainly used to make UI feel more "natural" and for testing purposes.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Utilities.AwaitSleep(System.Int32)">
+            <summary>
+            Returns a task which awaits for a time in milliseconds.
+            </summary>
+            <param name="ms">The time in milliseconds to await for.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Utilities.OpCodeSequence(System.Collections.Generic.List{HarmonyLib.CodeInstruction},System.Collections.Generic.List{System.Reflection.Emit.OpCode},System.Int32)">
+            <summary>
+            Check if the following code instructions starting from a given index match a list of opcodes.
+            </summary>
+            <param name="codes">A list of code instructions to check</param>
+            <param name="toCheck">A list of op codes that is expected to match</param>
+            <param name="startIndex">Index to start checking from (inclusive)</param>
+            <returns>Whether or not the op codes found in the code instructions match.</returns>
+        </member>
+        <member name="M:SiraUtil.Utilities.GetResourceContent(System.Reflection.Assembly,System.String)">
+            <summary>
+            Gets the Embedded Asset at a specific path in an Assembly.
+            </summary>
+            <param name="assembly">The Assembly that contains the resource.</param>
+            <param name="resource">The path to the resource in the assembly.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Utilities.AssemblyFromPath(System.String,System.Reflection.Assembly@,System.String@)">
+            <summary>
+            Gets an assembly from a path.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Utilities.GetResource(System.Reflection.Assembly,System.String)">
+            <summary>
+            Gets the raw resource from an Assembly.
+            </summary>
+            <param name="asm">The assembly that contains the resource.</param>
+            <param name="ResourceName">The path to the resource in the assembly.</param>
+            <returns>The raw byte data of the resource.</returns>
+        </member>
+        <member name="T:SiraUtil.WebResponse">
+            <summary>
+            A custom web response class from the <see cref="T:SiraUtil.WebClient"/>
+            </summary>
+        </member>
+        <member name="F:SiraUtil.WebResponse.ReasonPhrase">
+            <summary>
+            The reason phrase of the response.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.WebResponse.IsSuccessStatusCode">
+            <summary>
+            Whether or not the request was successful.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.WebResponse.StatusCode">
+            <summary>
+            The HTTP Status code of the response.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.WebResponse.Headers">
+            <summary>
+            The headers of the response.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.WebResponse.RequestMessage">
+            <summary>
+            The request message.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.WebResponse.ContentToBytes">
+            <summary>
+            Converts the response to a byte array.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.WebResponse.ContentToString">
+            <summary>
+            Converts the response to a string.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.WebResponse.ContentToJson``1">
+            <summary>
+            Deserialize the content to a typed object.
+            </summary>
+            <typeparam name="T">The type of the object to deserialize the content into.</typeparam>
+            <returns>The deserialized object.</returns>
+        </member>
+        <member name="M:SiraUtil.WebResponse.ConvertToJObject">
+            <summary>
+            Deserializes the content into a <see cref="T:Newtonsoft.Json.Linq.JObject"/>
+            </summary>
+            <returns>The deserialized object as a <see cref="T:Newtonsoft.Json.Linq.JObject"/></returns>
+        </member>
+        <member name="T:SiraUtil.WebClient">
+            <summary>
+            A wrapper around the <seealso cref="T:System.Net.Http.HttpClient"/> which makes it easier to do simple web requests. You can receive this in any Container. Based off of nate1280's WebClient.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.WebClient.Initialize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:SiraUtil.WebClient.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:SiraUtil.WebClient.PostAsync(System.String,System.Object,System.Threading.CancellationToken,System.Net.Http.Headers.AuthenticationHeaderValue)">
+            <summary>
+            Asynchronously send a POST request.
+            </summary>
+            <param name="url">The URL to send the request to.</param>
+            <param name="postData">The body data for the request.</param>
+            <param name="token">The cancellation token for the request.</param>
+            <param name="authHeader">The header for the request.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.WebClient.GetAsync(System.String,System.Threading.CancellationToken,System.Net.Http.Headers.AuthenticationHeaderValue)">
+            <summary>
+            Asynchronously send a GET request.
+            </summary>
+            <param name="url">The URL to send the request to.</param>
+            <param name="token">The cancellation token for the request.</param>
+            <param name="authHeader">The header for the request.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.WebClient.DownloadImage(System.String,System.Threading.CancellationToken,System.Net.Http.Headers.AuthenticationHeaderValue)">
+            <summary>
+            Downloads an image at a URL and returns its raw byte data.
+            </summary>
+            <param name="url">The URL where the image is located.</param>
+            <param name="token">The cancellation token for the request.</param>
+            <param name="authHeader">The header for the request.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.WebClient.SendAsync(System.Net.Http.HttpMethod,System.String,System.Threading.CancellationToken,System.Object,System.Net.Http.Headers.AuthenticationHeaderValue,System.IProgress{System.Double})">
+            <summary>
+            Asynchronously send a web request.
+            </summary>
+            <param name="methodType">The HTTP request type of the request.</param>
+            <param name="url">The URL to send the request to.</param>
+            <param name="token">The cancellation token of the request.</param>
+            <param name="postData">The body of the request.</param>
+            <param name="authHeader">The header of the request.</param>
+            <param name="progress">The progress reporter of the request.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SiraUtil.Zenject.Containerized`1">
+            <summary>
+            Standardization for containerizing upgraded objects.
+            </summary>
+            <typeparam name="U"></typeparam>
+        </member>
+        <member name="F:SiraUtil.Zenject.Containerized`1.Self">
+            <summary>
+            The component.
+            </summary>
+        </member>
+        <member name="F:SiraUtil.Zenject.Containerized`1.Container">
+            <summary>
+            The container in this containerized component.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.Containerized`1.Resolve``1">
+            <summary>
+            Resolves and cached data from a containerized component.
+            </summary>
+            <typeparam name="T">The type of the object to resolve.</typeparam>
+            <returns>The resolved object.</returns>
+        </member>
+        <member name="M:SiraUtil.Zenject.Containerized`1.ResolveId``1(System.Object)">
+            <summary>
+            Resolves and cached data from a containerized component based on an identifier.
+            </summary>
+            <typeparam name="T">The type of the object to resolve.</typeparam>
+            <param name="id">The identifier to resolve by.</param>
+            <returns>The resolved object.</returns>
+        </member>
+        <member name="T:SiraUtil.Zenject.InstallBuilder">
+            <summary>
+            A builder for constructing <seealso cref="T:SiraUtil.Zenject.Zenjector"/> bindings.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.WithParameters(System.Object[])">
+            <summary>
+            Add instance parameters to be injected into your installer.
+            </summary>
+            <param name="parameters">The parameters for your installer.</param>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.On(System.Func{UnityEngine.SceneManagement.Scene,Zenject.Context,Zenject.DiContainer,System.Boolean})">
+            <summary>
+            Install the installer at a destination via function.
+            </summary>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.On(System.String)">
+            <summary>
+            Installs the installer at a destination.
+            </summary>
+            <param name="destination">The name of the destination (scene name, installer type, scene context name, etc).</param>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.On``1">
+            <summary>
+            Installs the installer at a destination.
+            </summary>
+            <typeparam name="T">The type of the destination (installer type, etc).</typeparam>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.Register``1">
+            <summary>
+            Registers an installer to be installed.
+            </summary>
+            <typeparam name="T">The type of the installer.</typeparam>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.ShortCircuitFor``1">
+            <summary>
+            Prevents the installer from being installed at a destination.
+            </summary>
+            <typeparam name="T">The type of the destination.</typeparam>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.ShortCircuitForStandard">
+            <summary>
+            Prevents the installer from being installed on the standard game level.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.ShortCircuitForCampaign">
+            <summary>
+            Prevents the installer from being installed on the campaign game level.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.ShortCircuitForTutorial">
+            <summary>
+            Prevents the installer from being installed on the tutorial game level.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.ShortCircuitForMultiplayer">
+            <summary>
+            Prevents the installer from being installed on the multiplayer game level.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.ShortCircuitFor(System.String)">
+            <summary>
+            Prevents the installer from being installed at a destination.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.OnlyForStandard">
+            <summary>
+            Only install this installer on the standard game.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.OnlyForMultiplayer">
+            <summary>
+            Only install this installer in a multiplayer game.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.OnlyForCampaigns">
+            <summary>
+            Only install this installer in a campaign mission.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.Expose``1">
+            <summary>
+            Exposes a <see cref="T:UnityEngine.MonoBehaviour"/> in a <see cref="T:Zenject.SceneDecoratorContext"/> to the <seealso cref="T:Zenject.DiContainer"/> and binds it, thus making it available to be received in Zenject.
+            </summary>
+            <typeparam name="T">The type of the <see cref="T:UnityEngine.MonoBehaviour"/>.</typeparam>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.Mutate``1(System.Action{SiraUtil.Zenject.MutationContext,UnityEngine.MonoBehaviour})">
+            <summary>
+            Mutate a <see cref="T:UnityEngine.MonoBehaviour"/> in a <see cref="T:Zenject.Context"/> before it gets injected.
+            </summary>
+            <typeparam name="T">The type of the <see cref="T:UnityEngine.MonoBehaviour"/>.</typeparam>
+            <param name="action">The callback to handle mutations in.</param>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.Mutate``1(System.Action{SiraUtil.Zenject.MutationContext,``0})">
+            <summary>
+            Mutate a <see cref="T:UnityEngine.MonoBehaviour"/> in a <see cref="T:Zenject.Context"/> before it gets injected.
+            </summary>
+            <typeparam name="T">The type of the <see cref="T:UnityEngine.MonoBehaviour"/>.</typeparam>
+            <param name="action">The callback to handle mutations in.</param>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.Pseudo(System.Action{Zenject.DiContainer})">
+            <summary>
+            Install bindings with a pseudo action which acts like an installer. Not recommened for medium-large sized projects.
+            </summary>
+            <param name="action">The invoked action.</param>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.Pseudo(System.Action{Zenject.Context,Zenject.DiContainer})">
+            <summary>
+            Install bindings with a pseudo action which acts like an installer 
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.Initialized(System.Action{Zenject.SceneContext,Zenject.DiContainer})">
+            <summary>
+            Mainly for prototyping.
+            </summary>
+            <param name="onInit">An action that's invoked when the context has finished installing.</param>
+        </member>
+        <member name="M:SiraUtil.Zenject.InstallBuilder.When(System.Func{System.Boolean})">
+            <summary>
+            Conditionally install your installer.
+            </summary>
+            <param name="when">When to install.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SiraUtil.Zenject.MutationContext">
+            <summary>
+            A context provider for mutating Zenject object.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Zenject.MutationContext.Container">
+            <summary>
+            The container used in the active mutation.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Zenject.MutationContext.Decorator">
+            <summary>
+            The [potential] decorator context for this mutation.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.MutationContext.AddInjectable(UnityEngine.MonoBehaviour)">
+            <summary>
+            Adds an injectable to the injectable pool.
+            </summary>
+            <param name="behaviour">The pool of injectables.</param>
+        </member>
+        <member name="M:SiraUtil.Zenject.MutationContext.GetInjected``1">
+            <summary>
+            Get an injected object.
+            </summary>
+            <typeparam name="T">The type of the object.</typeparam>
+            <returns>The first result in the injectable list.</returns>
+        </member>
+        <member name="M:SiraUtil.Zenject.MutationContext.GetInjected``1(System.Func{``0,System.Boolean})">
+            <summary>
+            Get an injected object.
+            </summary>
+            <typeparam name="T">The type of the object.</typeparam>
+            <param name="func">The function to search it via.</param>
+            <returns>The injected object.</returns>
+        </member>
+        <member name="T:SiraUtil.Zenject.UBinder`2">
+            <summary>
+            Type binder to make intermod container injection simpler.
+            </summary>
+            <typeparam name="T">The type of the host parent (key).</typeparam>
+            <typeparam name="U">The type of the shared service (value).</typeparam>
+        </member>
+        <member name="F:SiraUtil.Zenject.UBinder`2.Value">
+            <summary>
+            The binder value.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.UBinder`2.#ctor(`1)">
+            <summary>
+            Create a type binder.
+            </summary>
+            <param name="value">The value for the binder.</param>
+        </member>
+        <member name="T:SiraUtil.Zenject.Zenjector">
+            <summary>
+            An extensible system for creating Zenject hooks in a mod with a focus on customizability.
+            </summary>
+        </member>
+        <member name="P:SiraUtil.Zenject.Zenjector.Name">
+            <summary>
+            The name of the Zenjector
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.Zenjector.Enable">
+            <summary>
+            Enable the Zenjector. (Enabled by default)
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.Zenjector.Disable">
+            <summary>
+            Disable this Zenjector.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.Zenjector.Auto">
+            <summary>
+            Allow SiraUtil to automatically handle the state of your installers based on the status of your plugin. (Enabled by default)
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.Zenjector.Manual">
+            <summary>
+            Disallow SiraUtil from automatically handling the state of your installers.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Zenject.Zenjector.OnApp``1">
+            <summary>
+            Install your installer on the app installer (project context), any bindings made here are available throughout the entire game.
+            </summary>
+            <typeparam name="T">The type of your installer.</typeparam>
+        </member>
+        <member name="M:SiraUtil.Zenject.Zenjector.OnMenu``1">
+            <summary>
+            Installs your installer on the menu scene.
+            </summary>
+            <typeparam name="T">The type of your installer.</typeparam>
+        </member>
+        <member name="M:SiraUtil.Zenject.Zenjector.OnGame``1">
+            <summary>
+            Installs your installer on the game scene.
+            </summary>
+            <typeparam name="T">The type of your installer.</typeparam>
+        </member>
+        <member name="M:SiraUtil.Zenject.Zenjector.OnGame``1(System.Boolean)">
+            <summary>
+            Installs your installer as the game scene is setting up.
+            </summary>
+            <typeparam name="T">The type of your installer.</typeparam>
+            <param name="onGameSetup">Whether or not the installer is installed along during the game core setup. If your objects depend on beatmap elements like the <see cref="T:AudioTimeSyncController"/> or <see cref="T:BeatmapObjectManager"/>, set this to false as they don't exist in setup in multiplayer.</param>
+        </member>
+        <member name="M:SiraUtil.Zenject.Zenjector.Register``1">
+            <summary>
+            Installs an installer.
+            </summary>
+            <typeparam name="T">The type of your installer.</typeparam>
+        </member>
+        <member name="M:SiraUtil.Zenject.Zenjector.On``1">
+            <summary>
+            Provides a destination for your installer to be installed on.
+            </summary>
+            <typeparam name="T">The type of the destination.</typeparam>
+        </member>
+        <member name="M:SiraUtil.Zenject.Zenjector.On(System.String)">
+            <summary>
+            Provides a destination for your installer to be installed on.
+            </summary>
+            <param name="destination">The name of the destination.</param>
+        </member>
+        <member name="M:SiraUtil.Zenject.Zenjector.On(System.Func{UnityEngine.SceneManagement.Scene,Zenject.Context,Zenject.DiContainer,System.Boolean})">
+            <summary>
+            Install the installer at a destination via function.
+            </summary>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SiraUtil.Plugin">
+            <summary>
+            The main Plugin class for SiraUtil.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Plugin.#ctor(IPA.Config.Config,IPA.Logging.Logger,IPA.Loader.PluginMetadata)">
+            <summary>
+            The initialization/entry point of SiraUtil.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Plugin.OnEnable">
+            <summary>
+            The method called when SiraUtil is enabling.
+            </summary>
+        </member>
+        <member name="M:SiraUtil.Plugin.OnDisable">
+            <summary>
+            The method called when SiraUtil is disabling.
+            </summary>
+        </member>
+    </members>
+</doc>

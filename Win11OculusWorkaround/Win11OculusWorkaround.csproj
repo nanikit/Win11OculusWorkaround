@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <OutputType>Library</OutputType>
@@ -20,18 +20,20 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <GenerateManifest>true</GenerateManifest>
-    <Configurations>Debug;Release;TestOutGame</Configurations>
+    <Configurations>Debug;Release;TestOutGame;Release-1.18.3</Configurations>
+    <DefineConstants Condition="'$(Configuration)'=='Release-1.18.3'">$(DefineConstants);PRE_1_19</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' != 'Release'">
+  <PropertyGroup Condition="!$(Configuration.Contains('Release'))">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
     <OutputPath>bin\Debug</OutputPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="$(Configuration.Contains('Release'))">
     <DebugType>none</DebugType>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>bin\$(Configuration)</OutputPath>
+    <DisableZipRelease>False</DisableZipRelease>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(DefineConstants.Contains('CIBuild')) OR '$(NCrunch)' == '1'">
@@ -70,8 +72,14 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>$(BeatSaberDir)\Libs\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SiraUtil">
-      <HintPath>$(BeatSaberDir)\Plugins\SiraUtil.dll</HintPath>
+    <Reference Include="SiraUtil, Version=3.0.5.0" Condition="!$(DefineConstants.Contains('PRE_1_19'))">
+      <SpecificVersion>True</SpecificVersion>
+      <ReferencePath>$(ProjectDir)Libs\SiraUtil-3.0.5\SiraUtil.dll</ReferencePath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SiraUtil, Version=2.5.8.0" Condition="$(DefineConstants.Contains('PRE_1_19'))">
+      <SpecificVersion>True</SpecificVersion>
+      <ReferencePath>$(ProjectDir)Libs\SiraUtil-2.5.8\SiraUtil.dll</ReferencePath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SteamVR">
@@ -113,12 +121,18 @@
     <PluginName>Win11OculusWorkaround</PluginName>
     <Authors>nanikit</Authors>
     <Version>0.0.1</Version>
-    <GameVersion>1.19.1</GameVersion>
+    <GameVersion Condition="$(DefineConstants.Contains('PRE_1_19'))">1.18.3</GameVersion>
+    <GameVersion Condition="!$(DefineConstants.Contains('PRE_1_19'))">1.19.1</GameVersion>
     <Description>Workaround oculus windows 11 issue</Description>
   </PropertyGroup>
   <ItemGroup>
-    <DependsOn Include="BSIPA" Version="^4.2.0" />
-    <DependsOn Include="SiraUtil" Version="^3.0.0" />
+    <DependsOn Include="BSIPA" Version="^4.0.0" />
     <DependsOn Include="BeatSaberMarkupLanguage" Version="^1.5.5" />
+  </ItemGroup>
+  <ItemGroup Condition="$(DefineConstants.Contains('PRE_1_19'))">
+    <DependsOn Include="SiraUtil" Version="^2.5.5" />
+  </ItemGroup>
+  <ItemGroup Condition="!$(DefineConstants.Contains('PRE_1_19'))">
+    <DependsOn Include="SiraUtil" Version="^3.0.0" />
   </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Release|x64 = Release|x64
+		Release-1.18.3|x64 = Release-1.18.3|x64
 		TestInGame|x64 = TestInGame|x64
 		TestOutGame|x64 = TestOutGame|x64
 	EndGlobalSection
@@ -24,12 +25,15 @@ Global
 		{14269CDE-DEC8-458D-84A3-ACD5A768A04C}.Debug|x64.Build.0 = Debug|x64
 		{14269CDE-DEC8-458D-84A3-ACD5A768A04C}.Release|x64.ActiveCfg = Release|x64
 		{14269CDE-DEC8-458D-84A3-ACD5A768A04C}.Release|x64.Build.0 = Release|x64
+		{14269CDE-DEC8-458D-84A3-ACD5A768A04C}.Release-1.18.3|x64.ActiveCfg = Release-1.18.3|x64
+		{14269CDE-DEC8-458D-84A3-ACD5A768A04C}.Release-1.18.3|x64.Build.0 = Release-1.18.3|x64
 		{14269CDE-DEC8-458D-84A3-ACD5A768A04C}.TestInGame|x64.ActiveCfg = Debug|x64
 		{14269CDE-DEC8-458D-84A3-ACD5A768A04C}.TestInGame|x64.Build.0 = Debug|x64
 		{14269CDE-DEC8-458D-84A3-ACD5A768A04C}.TestOutGame|x64.ActiveCfg = TestOutGame|x64
 		{14269CDE-DEC8-458D-84A3-ACD5A768A04C}.TestOutGame|x64.Build.0 = TestOutGame|x64
 		{248F8761-0D9B-41BB-BC89-E2331D744BC0}.Debug|x64.ActiveCfg = Exe|x64
 		{248F8761-0D9B-41BB-BC89-E2331D744BC0}.Release|x64.ActiveCfg = Exe|x64
+		{248F8761-0D9B-41BB-BC89-E2331D744BC0}.Release-1.18.3|x64.ActiveCfg = Lib|x64
 		{248F8761-0D9B-41BB-BC89-E2331D744BC0}.TestInGame|x64.ActiveCfg = Lib|x64
 		{248F8761-0D9B-41BB-BC89-E2331D744BC0}.TestInGame|x64.Build.0 = Lib|x64
 		{248F8761-0D9B-41BB-BC89-E2331D744BC0}.TestOutGame|x64.ActiveCfg = Exe|x64

@@ -17,12 +17,17 @@ namespace Win11OculusWorkaround {
     [Init]
     public void Setup(IPALogger logger, Zenjector zenjector, PluginMetadata metadata, IPA.Config.Config ipaStore) {
       _logger = logger;
+      _metadata = metadata;
 
-      var configuration = ipaStore.Generated<Configuration>();
-      zenjector.Install<AppInstaller>(Location.App, logger, metadata, configuration);
+      _configuration = ipaStore.Generated<Configuration>();
 
+#if PRE_1_19
+      zenjector.OnApp<AppInstaller>();
+#else
+      zenjector.Install<AppInstaller>(Location.App);
       zenjector.UseLogger(logger);
       zenjector.UseMetadataBinder<Plugin>();
+#endif
 
       _logger?.Info("Finished setup.");
     }
@@ -37,6 +42,8 @@ namespace Win11OculusWorkaround {
       // No op, just for suppressing BSIPA confirm.
     }
 
-    private IPALogger? _logger;
+    static internal IPALogger? _logger;
+    static internal PluginMetadata? _metadata;
+    static internal Configuration? _configuration;
   }
 }
