@@ -120,7 +120,7 @@
     <PluginId>Win11OculusWorkaround</PluginId>
     <PluginName>Win11OculusWorkaround</PluginName>
     <Authors>nanikit</Authors>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <GameVersion Condition="$(DefineConstants.Contains('PRE_1_19'))">1.18.3</GameVersion>
     <GameVersion Condition="!$(DefineConstants.Contains('PRE_1_19'))">1.19.1</GameVersion>
     <Description>Workaround oculus windows 11 issue</Description>
